@@ -1,7 +1,8 @@
 # type: ignore
 from nicegui import ui
 from rembg import remove 
-from PIL import Image 
+from PIL import Image
+from functools import partial 
 import uuid
 
 # This file is the main homepage of the app
@@ -42,10 +43,10 @@ def main():
     with ui.row().style('transform: scale(1.5); margin-top: 10%; margin-left: 20%;'):
 
         for name, desc in pages.items():
+            
             # create the navigation card for the page on the homepage
-
             with ui.card() \
-            .on('click', lambda e: ui.navigate.to(f'/app/{name}')) \
+            .on('click', partial(ui.navigate.to, f'/app/{name}')) \
             .style('background-color: lightblue; cursor: pointer;'):
                 
                 ui.image(logos[name]) \
