@@ -3,25 +3,21 @@ from nicegui import ui
 from rembg import remove 
 from PIL import Image
 from functools import partial 
-import uuid
+import uuid, importlib
 
 # This file is the main homepage of the app
 
 
 # Here are some helper functions and variables
-def header(*args):
-    ui.page_title(args[0])
+def header(title):
+    ui.page_title('Kairy')
     with ui.header():
-        home = ui.label(args[-1]).classes('text-h3').on('click', js_handler='''() => {
-        window.location.href = '/';
-        }''')
+        with ui.row().classes('text-h3'):
+            ui.label('🏠').on('click', js_handler='''() => {
+            window.location.href = '/';
+            }''').style('cursor: pointer;')
 
-        home.on('mouseover', js_handler="() => {" + \
-        f"c{home.id}.style.color = 'yellow';" + \
-        "}").on('mouseout', js_handler="() => {" + \
-        f"c{home.id}.style.color = 'white';" + \
-        "}")
-    home.style('cursor: pointer;')
+            ui.label(f'| {title}')
 
 pages = {
     "about": "About Kairy",
@@ -56,8 +52,9 @@ def main():
 
 @ui.page('/app/{page}')
 def app(page: str):
-    header(page)
-    ui.label(f'Welcome to the {page} page!').classes('text-h3')
+    header(pages[page])
+    body = importlib.import_module(f'pages.{page}')
+    body.show()
 
 # This makes the web app visible at localhost:35
 ui.run(port=35, storage_secret=f'{uuid.uuid4()}', favicon='💼')
