@@ -1,33 +1,18 @@
 # type: ignore
 from nicegui import ui
-from rembg import remove 
-from PIL import Image
 from functools import partial 
 import uuid, importlib
+from utils import header, find
 
 # This file is the main homepage of the app
 
-
-# Here are some helper functions and variables
-def header(title):
-    ui.page_title('Kairy')
-    with ui.header():
-        with ui.row().classes('text-h3'):
-            ui.label('🏠').on('click', js_handler='''() => {
-            window.location.href = '/';
-            }''').style('cursor: pointer;')
-
-            ui.label(f'| {title}')
-
-pages = {
-    "about": "About Kairy",
-    "join": "Create Account"
-}
-
-# This loads all of our page logos and removes the background from them
-# Standardize as <single-word-page-name>.png
-logos = {name:remove(Image.open(f'resources/images/{name}.png')) for name in pages}
-
+# List of pages, with their icons and descriptions
+# Find the full list of possible icons with their names at https://fonts.google.com/icons
+pages = [
+    ("about", "help", "About Kairy"),
+    ("join", "person_add", "Create Account"),
+    ("users", "diversity_3", "User Directory")
+]
 
 
 # Here are the functions that get called when navigating to different pages in our website
@@ -35,24 +20,32 @@ logos = {name:remove(Image.open(f'resources/images/{name}.png')) for name in pag
 def main():
     header('Kairy')
 
-    # These cards are basically big buttons for different pages
-    with ui.row().style('transform: scale(1.5); margin-top: 10%; margin-left: 20%;'):
+    # This is how we add custom CSS (or any other header HTML) to the webpage
+    ui.add_head_html('''
+        <style type="text/tailwindcss">
+            @layer components {
+                .box {
+                    @apply bg-orange-100 p-12 text-center shadow-lg rounded-lg text-white;
+                }
+            }
+        </style>
+    ''')
 
-        for name, desc in pages.items():
-            
-            # create the navigation card for the page on the homepage
-            with ui.card() \
-            .on('click', partial(ui.navigate.to, f'/app/{name}')) \
-            .style('background-color: lightblue; cursor: pointer;'):
-                
-                ui.image(logos[name]) \
-                .style('pointer-events: none;')
-                with ui.card_section():
-                    ui.label(desc)
+    # This uses our list to populate a row of buttons for navigating to the pages
+    with ui.row():
+        for name, icon, desc in pages:
+            with ui.card().classes('box'):
+                ui.button(icon=icon).props('outline round').classes('shadow-lg').on_click(
+                    partial(ui.navigate.to, f'/app/{name}')
+                )
+                ui.label(desc).style('color: #6E93D6; font-size: 200%; font-weight: 300')
 
+# This allows pages to be created as long as
+#   1. They are included in the pages list in this file
+#   2. There is a <page-name>.py file in the pages folder that has a show method to display its contents
 @ui.page('/app/{page}')
 def app(page: str):
-    header(pages[page])
+    header(find(pages, page, 2))
     body = importlib.import_module(f'pages.{page}')
     body.show()
 
