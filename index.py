@@ -2,7 +2,7 @@
 from nicegui import ui
 from functools import partial 
 import uuid, importlib
-from utils import header, find
+from utils import header, find, styles, section
 
 # This file is the main homepage of the app
 
@@ -19,17 +19,7 @@ pages = [
 @ui.page('/')
 def main():
     header('Kairy')
-
-    # This is how we add custom CSS (or any other header HTML) to the webpage
-    ui.add_head_html('''
-        <style type="text/tailwindcss">
-            @layer components {
-                .box {
-                    @apply bg-orange-100 p-12 text-center shadow-lg rounded-lg text-white;
-                }
-            }
-        </style>
-    ''')
+    styles('main')
 
     # This uses our list to populate a row of buttons for navigating to the pages
     with ui.row():
@@ -38,7 +28,7 @@ def main():
                 ui.button(icon=icon).props('outline round').classes('shadow-lg').on_click(
                     partial(ui.navigate.to, f'/app/{name}')
                 )
-                ui.label(desc).style('color: #6E93D6; font-size: 200%; font-weight: 300')
+                section(desc)
 
 # This allows pages to be created as long as
 #   1. They are included in the pages list in this file
@@ -50,4 +40,4 @@ def app(page: str):
     body.show()
 
 # This makes the web app visible at localhost:35
-ui.run(port=35, storage_secret=f'{uuid.uuid4()}', favicon='💼')
+ui.run(port=335, storage_secret=f'{uuid.uuid4()}', favicon='💼')

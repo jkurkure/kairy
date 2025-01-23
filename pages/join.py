@@ -1,6 +1,52 @@
 from nicegui import ui
+from functools import partial 
+from utils import styles, section, header
+
+registerTypes = [
+    ('Phone Number', 'phone'),
+    ('Google Accounts', 'google')
+]
+
+formlabel = partial(section, size=120)
 
 def show():
+    styles('main')
+
+    ui.label("We're so glad you want to join the family!").classes('text-h5')
+    
+    ui.label('How do you wish to register?')
+    
     with ui.row():
-        ui.label('Sign up to Kairy ').classes('text-3xl')
-        ui.button('here!')
+        for type, page in registerTypes:
+            with ui.card().classes('box').on('click', partial(ui.navigate.to, f'/app/join/{page}')):
+                section(type)
+
+
+# Sub-pages
+@ui.page('/app/join/google')
+def google():
+    header('Create Account')
+    section('Under construction!')
+
+@ui.page('/app/join/phone')
+def phone():
+    header('Create Account')
+
+    with ui.grid(columns=2):
+        with ui.element('div').classes('p-2 bg-orange-100'):
+            formlabel('Phone Number: ')
+        with ui.element('div').classes('p-2 bg-blue-100'):
+            ui.number(placeholder='Without country code').props('rounded outlined dense')
+
+        with ui.element('div').classes('p-2 bg-orange-100'):
+            formlabel('Country Code: ')
+        with ui.element('div').classes('p-2 bg-blue-100'):
+            with ui.row():
+                formlabel('+', color=0x222)
+                ui.number(placeholder='91').props('rounded outlined dense').style('width: 60%;')
+
+        with ui.element('div').classes('p-2 bg-orange-100'):
+            formlabel('Username: ')
+        with ui.element('div').classes('p-2 bg-blue-100'):
+            with ui.row():
+                ui.input().props('rounded outlined dense')  
