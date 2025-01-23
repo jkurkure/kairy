@@ -39,5 +39,5 @@ def app(page: str):
     body = importlib.import_module(f'pages.{page}')
     body.show()
 
-# This makes the web app visible at localhost:35
+# This makes the web app visible at localhost:335
 ui.run(port=335, storage_secret=f'{uuid.uuid4()}', favicon='💼')
