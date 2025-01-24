@@ -1,6 +1,6 @@
 from nicegui import ui
 from functools import partial 
-from utils import styles, section, header, username, password
+from utils import styles, section, header, username, password, phones
 import uuid
 
 registerTypes = [
@@ -44,24 +44,22 @@ def phone():
         with ui.element('div').classes('p-2 bg-blue-100'):
             with ui.row():
                 formlabel('+', color=0x222)
-                ui.number(placeholder='91').props('rounded outlined dense').style('width: 60%;')
+                ui.number(placeholder='91', on_change=lambda e: result.set_text(phones.where(f'+{e.value}')[0])).props('rounded outlined dense').style('width: 60%;')
+                result = ui.label()
 
         with ui.element('div').classes('p-2 bg-orange-100'):
             formlabel('Username: ')
         with ui.element('div').classes('p-2 bg-blue-100'):
-            with ui.row():
-                ui.input(value=username.generate_uname(f'{uuid.uuid4()}', 2)).props('rounded outlined dense')
+            ui.input(value=username.generate_uname(f'{uuid.uuid4()}', 2)).props('rounded outlined dense')
 
 
         with ui.element('div').classes('p-2 bg-orange-100'):
             formlabel('Password: ')
         with ui.element('div').classes('p-2 bg-blue-100'):
-            with ui.row():
-                ui.input(password_toggle_button=True, value=password.generate_password(f'{uuid.uuid4()}', 15)).props('rounded outlined dense')
+            ui.input(password_toggle_button=True, value=password.generate_password(f'{uuid.uuid4()}', 14)).props('rounded outlined dense')
 
 
         with ui.element('div').classes('p-2 bg-orange-100'):
             formlabel('Confirm Password: ')
         with ui.element('div').classes('p-2 bg-blue-100'):
-            with ui.row():
-                ui.input(password=True, password_toggle_button=True).props('rounded outlined dense')    
+            ui.input(password=True, password_toggle_button=True).props('rounded outlined dense')    
