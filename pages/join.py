@@ -1,6 +1,7 @@
 from nicegui import ui
 from functools import partial 
-from utils import styles, section, header
+from utils import styles, section, header, username, password
+import uuid
 
 registerTypes = [
     ('Phone Number', 'phone'),
@@ -49,4 +50,18 @@ def phone():
             formlabel('Username: ')
         with ui.element('div').classes('p-2 bg-blue-100'):
             with ui.row():
-                ui.input().props('rounded outlined dense')  
+                ui.input(value=username.generate_uname(f'{uuid.uuid4()}', 2)).props('rounded outlined dense')
+
+
+        with ui.element('div').classes('p-2 bg-orange-100'):
+            formlabel('Password: ')
+        with ui.element('div').classes('p-2 bg-blue-100'):
+            with ui.row():
+                ui.input(password_toggle_button=True, value=password.generate_password(f'{uuid.uuid4()}', 15)).props('rounded outlined dense')
+
+
+        with ui.element('div').classes('p-2 bg-orange-100'):
+            formlabel('Confirm Password: ')
+        with ui.element('div').classes('p-2 bg-blue-100'):
+            with ui.row():
+                ui.input(password=True, password_toggle_button=True).props('rounded outlined dense')    
