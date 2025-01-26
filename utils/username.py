@@ -1,10 +1,5 @@
 from nltk.corpus import brown
-import random
-import string
-import sys
-import platformdirs
-import pickle
-import os
+import random, sys, platformdirs, pickle, os
 
 data_dir = platformdirs.user_data_dir(
     appname="uname-generator",
