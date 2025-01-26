@@ -1,4 +1,4 @@
-import random, sys, platformdirs, pickle, os
+import platformdirs, pickle, os
 
 data_dir = platformdirs.user_data_dir(
     appname="app",
