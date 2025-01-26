@@ -11,7 +11,7 @@ from utils import header, find, styles, section
 pages = [
     ("about", "help", "About Kairy"),
     ("join", "person_add", "Create Account"),
-    ("users", "diversity_3", "User Directory")
+    ("users", "diversity_3", "Log In")
 ]
 
 
