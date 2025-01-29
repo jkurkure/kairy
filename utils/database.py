@@ -15,7 +15,7 @@ else:
     open(file_path, "x")
     
 
-def Table(name, *columns):
+def getTable(name, *columns):
     if name in MainDatabase:
         return MainDatabase[name]
     
@@ -26,3 +26,22 @@ def Table(name, *columns):
 
         with open(file_path, "wb") as f:
             pickle.dump(MainDatabase, f)
+
+def addRow(tableName, **items):
+    if tableName in MainDatabase:
+        for col in MainDatabase[tableName]:
+            if col in items:
+                MainDatabase[tableName][col].append(items[col])
+            else:
+                MainDatabase[tableName][col].append(None)
+
+        with open(file_path, "wb") as f:
+                pickle.dump(MainDatabase, f)
+
+def delRow(tableName, field, value):
+    if tableName in MainDatabase:
+        table = MainDatabase[tableName]
+        for i, x in table[field]:
+            if x == value:
+                for col in table[col]:
+                    pass
