@@ -1,8 +1,9 @@
 from nicegui import ui, app
-from utils import database, section, logout, phones
+from utils import database, section, logout, phones, styles
 from .join import formlabel
 
 def show():
+
     if database.getTable('Users') is None:
         ui.label('Kairy App is closed for maintenance. Please check back later!')
 
@@ -37,7 +38,7 @@ def show():
         record = database.getTable('Users').iloc[i]
         section(f'Welcome back, {record['username']}!')
 
-        with ui.card():
+        with ui.card().classes('info'):
             ui.label(f'Date-of-birth: {record['birth']}').classes('text-h5')
             ui.label(f'Phone number: +{record['country']:.0f} {record['phone']:,.0f}'.replace(',', ' ')).classes('text-h5')
             ui.label(f'Country: {' '.join(phones.where(record['country']))}').classes('text-h5')

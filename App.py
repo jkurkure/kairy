@@ -40,6 +40,8 @@ def main():
 @ui.page('/app/{page}')
 def App(page: str):
     header(find(pages(), page, 2))
+    styles('main')
+
     body = importlib.import_module(f'pages.{page}')
     body.show()
 
