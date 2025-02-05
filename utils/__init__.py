@@ -1,4 +1,6 @@
 from nicegui import ui
+import re
+import pandas as pd
 
 # Here are some helper functions and variables
 def header(title):
@@ -27,3 +29,12 @@ def styles(path):
 
 def section(text, color=0x6E93D6, size=200):
     ui.label(text).style(f'color: #{color:x}; font-size: {size}%; font-weight: 300')
+
+class Form:
+    pass
+
+def dateCheck(date):
+    return re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", re.IGNORECASE).match(date)
+
+def unique(L):
+    return pd.Series(L).unique().tolist()
