@@ -76,5 +76,8 @@ def delRow(tableName, field, value):
     with open(file_path, "wb") as f:
         pickle.dump(MainDatabase, f)
 
+def getRow(tableName, field, value):
+    return MainDatabase[tableName].index[query := MainDatabase[tableName][field] == value], MainDatabase[tableName][query := MainDatabase[tableName][field] == value]
+
 def showTable(tableName):
     ui.table.from_pandas(getTable(tableName)).classes('w-full') # type: ignore
