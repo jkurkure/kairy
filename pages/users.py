@@ -1,9 +1,21 @@
 from nicegui import ui, app
 from utils import database, section, logout, phones, styles
 from .join import formlabel
+import base64
+
+if 'profile-pics' not in app.storage.general:
+    app.storage.general['profile-pics'] = {}
+
+
+def setProfilePic(e):
+    ui.notify(f'Uploaded {e.name}')
+    rawData = base64.b64encode(e.content.read())
+
+    uname = (database.getTable('Users').iloc[app.storage.user['logIn']])['username']
+    app.storage.general['profile-pics'][uname] = f'data:{e.type};base64,{rawData.decode()}'
+    ui.navigate.to('/app/users')
 
 def show():
-
     if database.getTable('Users') is None:
         ui.label('Kairy App is closed for maintenance. Please check back later!')
 
@@ -37,6 +49,17 @@ def show():
         i = app.storage.user['logIn']
         record = database.getTable('Users').iloc[i]
         section(f'Welcome back, {record['username']}!')
+
+        with ui.card().classes('box'):
+            pp_off = record['username'] not in app.storage.general['profile-pics']
+            with ui.grid(columns=1 if pp_off else 2):
+                ui.image(app.storage.general['profile-pics'][record['username']]).style('max-width: 180px')
+                
+                with ui.column():
+                    section(f'{'Add' if pp_off else 'Change'} Profile Picture')
+                    ui.upload(on_upload=setProfilePic,
+                        on_rejected=lambda: ui.notify('Profile Picture is maximum 3.5MB!'),
+                        max_file_size=3_500_000, max_files=1).classes('max-w-full')
 
         with ui.card().classes('info'):
             ui.label(f'Date-of-birth: {record['birth']}').classes('text-h5')
