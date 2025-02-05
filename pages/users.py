@@ -1,12 +1,12 @@
 from nicegui import ui, app
-from utils import database
+from utils import database, section, logout
 from .join import formlabel
 
 def show():
     if database.getTable('Users') is None:
         ui.label('Kairy App is closed for maintenance. Please check back later!')
 
-    else:
+    elif 'logIn' not in app.storage.user:
         print(app.storage.user)
         # Create a log-in page and use database to check if entered credentials are correct
         # If so, redirect to the user's page
@@ -26,9 +26,14 @@ def show():
             i, record = database.getRow('Users', 'username', uname.value)
 
             if not record.empty and record['password'][0] == pword.value:
-                app.storage.user['logIn'] = i
-                ui.navigate.to('/app/users')
+                app.storage.user['logIn'] = i.to_list()[0]
+                ui.navigate.to('/')
             else:
                 ui.notify('Incorrect username or password', color='red')
 
         ui.button('Log In').on_click(login)
+
+    else:
+        i = app.storage.user['logIn']
+        section(f'Welcome back, {database.getTable('Users').iloc[i]['username']}!')
+        ui.button('Log Out').on_click(logout)

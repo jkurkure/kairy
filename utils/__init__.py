@@ -1,17 +1,27 @@
-from nicegui import ui
+from nicegui import ui, app
 import re
 import pandas as pd
+from .database import getTable
 
 # Here are some helper functions and variables
+def logout():
+    app.storage.user.clear()
+    ui.navigate.to('/app/users')
+
 def header(title):
     ui.page_title('Kairy')
-    with ui.header():
+    with ui.header().classes('justify-between'):
         with ui.row().classes('text-h4'):
             ui.label('🏠').on('click', js_handler='''() => {
             window.location.href = '/';
             }''').style('cursor: pointer;')
 
             ui.label(f'| {title}')
+
+        if 'logIn' in app.storage.user:
+            with ui.column().classes('items-center'):
+                ui.label(f'👤 {getTable('Users').iloc[app.storage.user['logIn']]['username']}')
+                ui.button('Log Out', on_click=logout).classes('bg-secondary')
 
 def find(L, v, i):
     for x in L:
