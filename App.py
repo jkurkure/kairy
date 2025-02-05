@@ -9,7 +9,10 @@ from utils import header, find, styles, section
 # This sets the pages to be accessible from the home-page, depending on whether the user is logged in
 def pages():
     return [
-        ("about", "help", "About Kairy")
+        ("about", "help", "About Kairy"),
+        ("request", "shopping_cart", "Order Delivery"),
+        ("new", "flight_takeoff", "I'm Flying"),
+        ("users", "badge", "Profile")
         ] if 'logIn' in app.storage.user else [
         ("about", "help", "About Kairy"),
         ("join", "person_add", "Create Account"),

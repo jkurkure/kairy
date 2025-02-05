@@ -1,5 +1,5 @@
 from nicegui import ui, app
-from utils import database, section, logout
+from utils import database, section, logout, phones
 from .join import formlabel
 
 def show():
@@ -7,7 +7,6 @@ def show():
         ui.label('Kairy App is closed for maintenance. Please check back later!')
 
     elif 'logIn' not in app.storage.user:
-        print(app.storage.user)
         # Create a log-in page and use database to check if entered credentials are correct
         # If so, redirect to the user's page
         # If not, display an error message
@@ -35,5 +34,14 @@ def show():
 
     else:
         i = app.storage.user['logIn']
-        section(f'Welcome back, {database.getTable('Users').iloc[i]['username']}!')
-        ui.button('Log Out').on_click(logout)
+        record = database.getTable('Users').iloc[i]
+        section(f'Welcome back, {record['username']}!')
+
+        with ui.card():
+            ui.label(f'Date-of-birth: {record['birth']}').classes('text-h5')
+            ui.label(f'Phone number: +{record['country']:.0f} {record['phone']:,.0f}'.replace(',', ' ')).classes('text-h5')
+            ui.label(f'Country: {' '.join(phones.where(record['country']))}').classes('text-h5')
+            
+            with ui.row():
+                ui.button('Edit Profile')
+                ui.button('Log Out').on_click(logout).props(f'color=red')
