@@ -79,5 +79,8 @@ def delRow(tableName, field, value):
 def getRow(tableName, field, value):
     return MainDatabase[tableName].index[query := MainDatabase[tableName][field] == value], MainDatabase[tableName][query := MainDatabase[tableName][field] == value]
 
+def hasCell(tableName, field, value):
+    return len(getRow('Users', 'username', 'Garvier-Caution')[0]) > 0
+
 def showTable(tableName):
     ui.table.from_pandas(getTable(tableName)).classes('w-full') # type: ignore

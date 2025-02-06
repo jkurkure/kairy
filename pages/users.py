@@ -1,11 +1,14 @@
 from nicegui import ui, app
-from utils import database, section, logout, phones, styles
+from utils import database, section, logout, phones, randCC, randFullName
 from .join import formlabel
 import base64
+from random import randrange
 
 if 'profile-pics' not in app.storage.general:
     app.storage.general['profile-pics'] = {}
 
+if database.getTable('Payment Methods') is None:
+    database.newTable('Payment Methods', 'username', 'Card Number', 'Card Holder Name', 'Security Code', 'Expiry Month', 'Expiry Year')
 
 def setProfilePic(e):
     ui.notify(f'Uploaded {e.name}')
@@ -53,7 +56,7 @@ def show():
         with ui.card().classes('box'):
             pp_off = record['username'] not in app.storage.general['profile-pics']
             with ui.grid(columns=1 if pp_off else 2):
-                ui.image(app.storage.general['profile-pics'][record['username']]).style('max-width: 180px')
+                ui.image(app.storage.general['profile-pics'][record['username']]).style('max-height: 280px')
                 
                 with ui.column():
                     section(f'{'Add' if pp_off else 'Change'} Profile Picture')
@@ -65,7 +68,47 @@ def show():
             ui.label(f'Date-of-birth: {record['birth']}').classes('text-h5')
             ui.label(f'Phone number: +{record['country']:.0f} {record['phone']:,.0f}'.replace(',', ' ')).classes('text-h5')
             ui.label(f'Country: {' '.join(phones.where(record['country']))}').classes('text-h5')
-            
+
             with ui.row():
                 ui.button('Edit Profile')
                 ui.button('Log Out').on_click(logout).props(f'color=red')
+
+
+        with ui.card().classes('box' if (cc_off := database.hasCell('Payment Methods', 'username', record['username'])) else 'info'):
+            with ui.grid(columns=1 if cc_off else 2):
+                with ui.column().classes('items-center'):
+                    section(f'{'Add' if cc_off else 'Change'} Payment Method')
+                    with ui.dialog() as pay_dialog, ui.card().classes('items-center'):
+                        section('Enter your payment details')
+
+                        with ui.grid(columns=2):
+                            with ui.element('div').classes('p-2 bg-orange-100'):
+                                formlabel('Card Number: ')
+                            with ui.element('div').classes('p-2 bg-blue-100'):
+                                ui.number(placeholder=randCC()).props('rounded outlined dense')
+
+                            with ui.element('div').classes('p-2 bg-orange-100'):
+                                formlabel('Card Holder Name: ')
+                            with ui.element('div').classes('p-2 bg-blue-100'):
+                                ui.input(placeholder=randFullName()).props('rounded outlined dense')
+
+                            with ui.element('div').classes('p-2 bg-orange-100'):
+                                formlabel('Security Code: ')
+                            with ui.element('div').classes('p-2 bg-blue-100'):
+                                ui.number(placeholder=randrange(100, 999)).props('rounded outlined dense')
+
+                            with ui.element('div').classes('p-2 bg-orange-100'):
+                                formlabel('Expiry Date: ')
+                            with ui.element('div').classes('p-2 bg-blue-100'):
+                                with ui.row().classes("no-wrap"):
+                                    ui.number(placeholder='MM').props('rounded outlined dense')
+                                    ui.label('/')
+                                    ui.number(placeholder='YYYY').props('rounded outlined dense')
+
+                        with ui.row():
+                            ui.button(icon='check', on_click=None).props('fab color=green')
+                            ui.button(icon='close', on_click=pay_dialog.close).props('fab color=red')
+
+                    ui.button(icon='wallet', on_click=pay_dialog.open).props('fab color=accent')
+            
+            
