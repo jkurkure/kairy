@@ -89,7 +89,10 @@ def phone():
 
     def createAccount(e):
         if form.valid: # type: ignore
-            database.addRow('Users', *unique([field.value for field in fields]))
-            ui.navigate.to('/app/users')
+            if database.hasCell('Users', 'username', fields[0].value):
+                ui.notify('That username is taken!')
+            else:
+                database.addRow('Users', *unique([field.value for field in fields]))
+                ui.navigate.to('/app/users')
 
     ui.button('Create Account').props('rounded outlined').bind_enabled_from(form, 'valid').on('click', createAccount) 

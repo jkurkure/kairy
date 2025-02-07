@@ -76,8 +76,12 @@ def delRow(tableName, field, value):
     with open(file_path, "wb") as f:
         pickle.dump(MainDatabase, f)
 
+def updateRow(tableName, searchField, searchValue, targetField, newValue):
+    MainDatabase[tableName][MainDatabase[tableName][searchField] == searchValue]
+    pass
+
 def getRow(tableName, field, value):
-    return MainDatabase[tableName].index[query := MainDatabase[tableName][field] == value], MainDatabase[tableName][query := MainDatabase[tableName][field] == value]
+    return MainDatabase[tableName].index[query := MainDatabase[tableName][field] == value], MainDatabase[tableName][query]
 
 def hasCell(tableName, field, value):
     return len(getRow('Users', 'username', 'Garvier-Caution')[0]) > 0
