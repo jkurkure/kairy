@@ -2,6 +2,8 @@ import platformdirs, pickle, os
 import pandas as pd
 from nicegui import ui
 
+pd.options.display.float_format = '{:.0f}'.format
+
 data_dir = platformdirs.user_data_dir(
     appname="app",
     appauthor="kairy")
@@ -48,11 +50,14 @@ else:
 #                 for col in table[col]:
 #                     pass
 
+def saveDB():
+    with open(file_path, "wb") as f:
+        pickle.dump(MainDatabase, f)
+
 def newTable(name, *columns):
     if name not in MainDatabase:
         MainDatabase[name] = pd.DataFrame(columns=columns)
-        with open(file_path, "wb") as f:
-            pickle.dump(MainDatabase, f)
+        saveDB()
 
 def getTable(name):
     if name in MainDatabase:
@@ -63,22 +68,19 @@ def getTable(name):
 def delTable(name):
     if name in MainDatabase:
         del MainDatabase[name]
-        with open(file_path, "wb") as f:
-            pickle.dump(MainDatabase, f)
+        saveDB()
 
 def addRow(tableName, *items):
     MainDatabase[tableName].loc[len(MainDatabase[tableName])] = items
-    with open(file_path, "wb") as f:
-        pickle.dump(MainDatabase, f)
+    saveDB()
 
 def delRow(tableName, field, value):
     MainDatabase[tableName] = MainDatabase[tableName][MainDatabase[tableName][field] != value]
-    with open(file_path, "wb") as f:
-        pickle.dump(MainDatabase, f)
+    saveDB()
 
 def updateRow(tableName, searchField, searchValue, targetField, newValue):
-    MainDatabase[tableName][MainDatabase[tableName][searchField] == searchValue]
-    pass
+    MainDatabase[tableName].loc[MainDatabase[tableName][searchField] == searchValue, targetField] = newValue
+    saveDB()
 
 def getRow(tableName, field, value):
     return MainDatabase[tableName].index[query := MainDatabase[tableName][field] == value], MainDatabase[tableName][query]

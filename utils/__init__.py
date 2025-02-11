@@ -25,7 +25,7 @@ def header(title):
 
         if 'logIn' in app.storage.user:
             with ui.grid(columns=2):
-                uname = getTable('Users').iloc[app.storage.user['logIn']]['username']
+                uname = getTable('Users').iloc[app.storage.user['logIn']]['username'] # type: ignore
                 ui.image(app.storage.general['profile-pics'][uname]).style('max-width: 90px')
                 with ui.column().classes('items-center'):
                     ui.label(f'👤 {uname}')
