@@ -59,7 +59,7 @@ def show():
                 ui.image(app.storage.general['profile-pics'][record['username']]).style('max-height: 280px')
                 
                 with ui.column():
-                    section(f'{'Add' if pp_off else 'Change'} Profile Picture')
+                    section(f"{'Add' if pp_off else 'Change'} Profile Picture")
                     ui.upload(on_upload=setProfilePic,
                         on_rejected=lambda: ui.notify('Profile Picture is maximum 3.5MB!'),
                         max_file_size=3_500_000, max_files=1).classes('max-w-full')
