@@ -56,7 +56,8 @@ def show():
         with ui.card().classes('box'):
             pp_off = record['username'] not in app.storage.general['profile-pics']
             with ui.grid(columns=1 if pp_off else 2):
-                ui.image(app.storage.general['profile-pics'][record['username']]).style('max-height: 280px')
+                if not pp_off:
+                    ui.image(app.storage.general['profile-pics'][record['username']]).style('max-height: 280px')
                 
                 with ui.column():
                     section(f"{'Add' if pp_off else 'Change'} Profile Picture")
