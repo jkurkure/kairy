@@ -11,12 +11,17 @@ if not os.path.exists(data_dir):
     os.makedirs(data_dir)
 file_path = os.path.join(data_dir, "kairy.database")
 
+def saveDB():
+    with open(file_path, "wb") as f:
+        pickle.dump(MainDatabase, f)
+
 if os.path.exists(file_path):
     with open(file_path, "rb") as f:
         MainDatabase = pickle.load(f)
 else:
     MainDatabase = {}
     open(file_path, "x")
+    saveDB()
     
 
 # def getTable(name, *columns):
@@ -49,10 +54,6 @@ else:
 #             if x == value:
 #                 for col in table[col]:
 #                     pass
-
-def saveDB():
-    with open(file_path, "wb") as f:
-        pickle.dump(MainDatabase, f)
 
 def newTable(name, *columns):
     if name not in MainDatabase:
