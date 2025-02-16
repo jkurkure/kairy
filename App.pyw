@@ -24,7 +24,7 @@ def pages():
 # Here are the functions that get called when navigating to different pages in our website
 @ui.page('/')
 def main():
-    header('Kairy')
+    header('Bringka')
     styles('main')
 
     # This uses our list to populate a row of buttons for navigating to the pages
