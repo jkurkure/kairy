@@ -51,7 +51,7 @@ def show():
     else:
         i = app.storage.user['logIn']
         record = database.getTable('Users').iloc[i]
-        section(f'Welcome back, {record['username']}!')
+        section(f"Welcome back, {record['username']}!")
 
         with ui.card().classes('box'):
             pp_off = record['username'] not in app.storage.general['profile-pics']
