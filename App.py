@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.11 
+
 # type: ignore
 from nicegui import ui, app
 from functools import partial 
