@@ -46,4 +46,4 @@ def App(page: str):
     body.show()
 
 # This makes the web app visible at localhost:335
-ui.run(port=335, storage_secret=f'{uuid.uuid4()}', favicon='💼')
+ui.run(port=1335, storage_secret=f'{uuid.uuid4()}', favicon='💼')
