@@ -17,9 +17,7 @@ def header(title):
     ui.page_title('Kairy')
     with ui.header().classes('justify-between'):
         with ui.row().classes('text-h4'):
-            ui.label('🏠').on('click', js_handler='''() => {
-            window.location.href = '/';
-            }''').style('cursor: pointer;')
+            ui.label('🏠').on('click', lambda _:ui.navigate.to('/')).style('cursor: pointer;')
 
             ui.label(f'| {title}')
 
