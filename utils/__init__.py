@@ -58,7 +58,7 @@ def unique(L):
     return pd.Series(L).unique().tolist()
 
 def randCC():
-    return f'{int(rstr.xeger(r'^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$')):,}'.replace(',', ' ')
+    return f"{int(rstr.xeger(r'^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$')):,}".replace(',', ' ')
 
 def randFullName():
     return f'{random.choice(firstNames)} {random.choice(lastNames)}'
