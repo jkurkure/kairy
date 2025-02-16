@@ -1,3 +1,6 @@
+import nltk
+nltk.download("brown")
+
 from nltk.corpus import brown
 import random, sys, platformdirs, pickle, os
 
