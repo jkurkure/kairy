@@ -65,9 +65,9 @@ def show():
                         max_file_size=3_500_000, max_files=1).classes('max-w-full')
 
         with ui.card().classes('info'):
-            ui.label(f'Date-of-birth: {record['birth']}').classes('text-h5')
-            ui.label(f'Phone number: +{record['country']:.0f} {record['phone']:,.0f}'.replace(',', ' ')).classes('text-h5')
-            ui.label(f'Country: {' '.join(phones.where(record['country']))}').classes('text-h5')
+            ui.label(f"Date-of-birth: {record['birth']}").classes('text-h5')
+            ui.label(f"Phone number: +{record['country']:.0f} {record['phone']:,.0f}".replace(',', ' ')).classes('text-h5')
+            ui.label(f"Country: {' '.join(phones.where(record['country']))}").classes('text-h5')
 
             with ui.row():
                 ui.button('Edit Profile')
