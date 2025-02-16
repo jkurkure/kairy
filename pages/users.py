@@ -77,7 +77,7 @@ def show():
         with ui.card().classes('box' if (cc_off := database.hasCell('Payment Methods', 'username', record['username'])) else 'info'):
             with ui.grid(columns=1 if cc_off else 2):
                 with ui.column().classes('items-center'):
-                    section(f'{'Add' if cc_off else 'Change'} Payment Method')
+                    section(f"{'Add' if cc_off else 'Change'} Payment Method")
                     with ui.dialog() as pay_dialog, ui.card().classes('items-center'):
                         section('Enter your payment details')
 
