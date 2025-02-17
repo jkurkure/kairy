@@ -125,5 +125,9 @@ def show():
                             ui.button(icon='close', on_click=pay_dialog.close).props('fab color=red')
 
                     ui.button(icon='wallet', on_click=pay_dialog.open).props('fab color=accent')
+
+                    if not cc_off:
+                        section('Remove Payment Method')
+                        ui.button(icon='trash', on_click=lambda: database.delRow('Payment Methods', 'username', record['username'])).props('fab color=orange')
             
             
