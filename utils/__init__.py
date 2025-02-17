@@ -64,3 +64,5 @@ def randCC():
 
 def randFullName():
     return f'{random.choice(firstNames)} {random.choice(lastNames)}'
+
+fieldType = ui.input|ui.number

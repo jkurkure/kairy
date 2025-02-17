@@ -1,5 +1,5 @@
 from nicegui import ui, app
-from utils import database, section, logout, phones, randCC, randFullName
+from utils import database, section, logout, phones, randCC, randFullName, fieldType
 from .join import formlabel
 import base64
 from random import randrange
@@ -106,8 +106,14 @@ def show():
                                     ui.label('/')
                                     ui.number(placeholder='YYYY').props('rounded outlined dense')
 
+
+                        def pay_submit(e):
+                            database.addRow('Payment Methods', record['username'], *[x.value for x in pay_dialog.descendants() if isinstance(x, fieldType)])
+                            pay_dialog.close()
+                            ui.notify('Payment method added successfully!')
+
                         with ui.row():
-                            ui.button(icon='check', on_click=None).props('fab color=green')
+                            ui.button(icon='check', on_click=pay_submit).props('fab color=green')
                             ui.button(icon='close', on_click=pay_dialog.close).props('fab color=red')
 
                     ui.button(icon='wallet', on_click=pay_dialog.open).props('fab color=accent')

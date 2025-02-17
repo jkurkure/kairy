@@ -1,7 +1,9 @@
-import nltk
-nltk.download("brown")
+try:
+    from nltk.corpus import brown
+except:
+    import nltk
+    nltk.download("brown")
 
-from nltk.corpus import brown
 import random, sys, platformdirs, pickle, os
 
 data_dir = platformdirs.user_data_dir(
