@@ -25,6 +25,6 @@ function openWindow() {
 """
 
 # Use ui.html to render the custom HTML
-ui.html(html_content)
+ui.add_body_html(html_content)
 
 ui.run()
