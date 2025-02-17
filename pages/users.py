@@ -82,7 +82,8 @@ def show():
                         cc_record = database.getRow('Payment Methods', 'username', record['username'])[1]
 
                         for cc_field in database.getTable('Payment Methods').columns:
-                            ui.label(f"{cc_field}: {cc_record[cc_field]}").classes('text-h5')
+                            if cc_field != 'username':
+                                ui.label(f"{cc_field}: {cc_record[cc_field][0]}").classes('text-h5')
 
                 with ui.column().classes('items-center'):
                     section(f"{'Add' if cc_off else 'Change'} Payment Method")
