@@ -128,6 +128,6 @@ def show():
 
                     if not cc_off:
                         section('Remove Payment Method')
-                        ui.button(icon='trash', on_click=lambda: database.delRow('Payment Methods', 'username', record['username'])).props('fab color=orange')
+                        ui.button(icon='delete', on_click=lambda: database.delRow('Payment Methods', 'username', record['username'])).props('fab color=orange')
             
             
