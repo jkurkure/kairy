@@ -77,6 +77,13 @@ def show():
 
         with ui.card().classes('box' if (cc_off := not database.hasCell('Payment Methods', 'username', record['username'])) else 'info'):
             with ui.grid(columns=1 if cc_off else 2):
+                if not cc_off:
+                    with ui.column().classes('items-center'):
+                        cc_record = database.getRow('Payment Methods', 'username', record['username'])[1]
+
+                        for cc_field in database.getTable('Payment Methods').columns:
+                            ui.label(f"{cc_field}: {cc_record[cc_field]}").classes('text-h5')
+
                 with ui.column().classes('items-center'):
                     section(f"{'Add' if cc_off else 'Change'} Payment Method")
                     with ui.dialog() as pay_dialog, ui.card().classes('items-center'):
