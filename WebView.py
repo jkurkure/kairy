@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.11
 from nicegui import ui
 
 # Define the HTML and JavaScript for the button and window opening logic
