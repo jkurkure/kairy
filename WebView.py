@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.11
 from nicegui import ui
 
 def open_window():
