@@ -22,9 +22,12 @@ def header(title):
             ui.label(f'| {title}')
 
         if 'logIn' in app.storage.user:
-            with ui.grid(columns=2):
-                uname = getTable('Users').iloc[app.storage.user['logIn']]['username'] # type: ignore
-                ui.image(app.storage.general['profile-pics'][uname]).style('max-width: 90px')
+            uname = getTable('Users').iloc[app.storage.user['logIn']]['username'] # type: ignore
+            
+            with ui.grid(columns=2 if (pp_set := uname in app.storage.general['profile-pics']) else 1):
+                if pp_set:
+                    ui.image(app.storage.general['profile-pics'][uname]).style('max-width: 90px')
+
                 with ui.column().classes('items-center'):
                     ui.label(f'👤 {uname}')
                     ui.button('Log Out', on_click=logout).classes('bg-secondary')

@@ -5,7 +5,11 @@ from nicegui import ui
 html_content = """
 <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
     <button onclick="openWindow()" style="padding: 10px 20px; font-size: 16px;">
-        Open Window
+        Open Bringka in Browser
+    </button>
+
+    <button onclick="openWindow()" style="padding: 10px 20px; font-size: 16px;">
+        Get Bringka from Play Store
     </button>
 </div>
 
