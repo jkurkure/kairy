@@ -75,7 +75,7 @@ def show():
                 ui.button('Log Out').on_click(logout).props(f'color=red')
 
 
-        with ui.card().classes('box' if (cc_off := database.hasCell('Payment Methods', 'username', record['username'])) else 'info'):
+        with ui.card().classes('box' if (cc_off := not database.hasCell('Payment Methods', 'username', record['username'])) else 'info'):
             with ui.grid(columns=1 if cc_off else 2):
                 with ui.column().classes('items-center'):
                     section(f"{'Add' if cc_off else 'Change'} Payment Method")
