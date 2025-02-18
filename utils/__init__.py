@@ -2,11 +2,7 @@ from nicegui import ui, app
 import re, rstr, random
 import pandas as pd
 from .database import getTable
-from names_dataset import NameDataset
 
-nd = NameDataset()
-lastNames = list(nd.get_top_names(n=100, use_first_names=False, country_alpha2='SG')['SG'])
-firstNames = list(nd.get_top_names(n=100, country_alpha2='SG')['SG']['M']) + list(nd.get_top_names(n=100, country_alpha2='SG')['SG']['F'])
 
 # Here are some helper functions and variables
 def logout():
@@ -61,6 +57,14 @@ def unique(L):
 def randCC():
     ccRegex = r'^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$'
     return f"{int(rstr.xeger(ccRegex)):,}".replace(',', ' ')
+
+
+if app.is_started:
+    from names_dataset import NameDataset
+
+    nd = NameDataset()
+    lastNames = list(nd.get_top_names(n=100, use_first_names=False, country_alpha2='SG')['SG'])
+    firstNames = list(nd.get_top_names(n=100, country_alpha2='SG')['SG']['M']) + list(nd.get_top_names(n=100, country_alpha2='SG')['SG']['F'])
 
 def randFullName():
     return f'{random.choice(firstNames)} {random.choice(lastNames)}'
