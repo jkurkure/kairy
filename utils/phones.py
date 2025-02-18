@@ -1,6 +1,11 @@
-from phone_iso3166.country import *
-import pycountry, env
-from twilio.rest import Client 
+#type: ignore
+
+from twilio.rest import Client
+from nicegui import app
+
+if app.is_started:
+    from phone_iso3166.country import *
+    import pycountry, env
   
 def where(number):
     try:
