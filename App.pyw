@@ -10,8 +10,9 @@ from utils import header, find, styles, section
 
 # This sets the pages to be accessible from the home-page, depending on whether the user is logged in
 def pages():
+    about = ("about", "help", f"About {env.APP_NAME}")
     return [
-        about := ("about", "help", f"About {env.APP_NAME}"),
+        about,
         ("request", "shopping_cart", "Order Delivery"),
         ("new", "flight_takeoff", "I'm Flying"),
         ("users", "badge", "Profile")
