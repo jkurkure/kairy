@@ -3,7 +3,12 @@ import subprocess, env, time
 
 pop = subprocess.Popen([env.PYRUNNER, 'App.pyw'])
 print(f'{env.APP_NAME} is launched')
-pop.wait()
+
+while pop.poll() is None:
+    time.sleep(0.1)
+
+else:
+    print(f'{env.APP_NAME} is terminated')
 
 
 
