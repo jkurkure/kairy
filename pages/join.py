@@ -22,7 +22,6 @@ formlabel = partial(section, size=120)
 if database.getTable("Users") is None:
     database.newTable("Users", "username", "password", "birth", "phone", "country")
 
-
 def show():
     styles("main")
 
@@ -37,13 +36,11 @@ def show():
             ):
                 section(type)
 
-
 # Sub-pages
 @ui.page("/app/join/google")
 def google():
     header("Create Account")
     section("Under construction!")
-
 
 @ui.page("/app/join/phone")
 def phone():
@@ -111,7 +108,6 @@ def phone():
 
     def formValidCheck(_):
         form.valid = pword_cfm.value == pword.value and (False not in [field.value not in [None, ""] for field in fields]) and dateCheck(date.value)  # type: ignore
-
     [field.on("change", formValidCheck) for field in fields]
 
     def createAccount(e):
@@ -121,7 +117,6 @@ def phone():
             else:
                 database.addRow("Users", *unique([field.value for field in fields]))
                 ui.navigate.to("/app/users")
-
     ui.button("Create Account").props("rounded outlined").bind_enabled_from(
         form, "valid"
     ).on("click", createAccount)

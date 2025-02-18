@@ -7,7 +7,6 @@ APP_VERSION = f'{subprocess.Popen("git rev-parse --short HEAD", shell=True, stdo
     2:-3
 ]
 
-
 def secret(name):
     SECRET_PATH = "/home/private/.secrets"
     with open(SECRET_PATH, "rb") as f:

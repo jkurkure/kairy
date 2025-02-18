@@ -8,7 +8,6 @@ from utils import header, find, styles, section
 
 # This file is the main homepage of the app
 
-
 # This sets the pages to be accessible from the home-page, depending on whether the user is logged in
 def pages():
     about = ("about", "help", f"About {env.APP_NAME}")
@@ -27,7 +26,6 @@ def pages():
         ]
     )
 
-
 # Here are the functions that get called when navigating to different pages in our website
 @ui.page("/")
 def main():
@@ -43,7 +41,6 @@ def main():
                 ).on_click(partial(ui.navigate.to, f"/app/{name}"))
                 section(desc)
 
-
 # This allows pages to be created as long as
 #   1. They are included in the pages list in this file
 #   2. There is a <page-name>.py file in the pages folder that has a show method to display its contents
@@ -55,12 +52,10 @@ def App(page: str):
     body = importlib.import_module(f"pages.{page}")
     body.show()
 
-
 async def monitor():
     while True:
         print(f"The app is running at {env.APP_NAME}!")
         await asyncio.sleep(1)
-
 
 app.on_startup(monitor)
 
