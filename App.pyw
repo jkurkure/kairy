@@ -48,4 +48,4 @@ def App(page: str):
     body.show()
 
 # This makes the web app visible at localhost:335
-ui.run(on_air='ECbAqaTeiLvz7SnB', storage_secret=f'{uuid.uuid4()}', favicon='💼')
+ui.run(on_air=env.secret('onair token'), storage_secret=f'{uuid.uuid4()}', favicon='💼')

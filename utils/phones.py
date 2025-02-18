@@ -1,5 +1,5 @@
 from phone_iso3166.country import *
-import pycountry
+import pycountry, env
 from twilio.rest import Client 
   
 def where(number):
@@ -14,7 +14,7 @@ def where(number):
 
 class SMS:
     account_sid = 'AC5ce5fa61d05a0d54a9c84c3f9401acae'
-    auth_token = 'efebe15f071bdbe850c1e69c2075f30b'
+    auth_token = env.secret('twilio token')
     twilio_number = 'twilio_number'
 
     # Create Twilio client
