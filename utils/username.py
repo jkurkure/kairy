@@ -52,4 +52,4 @@ def generate_uname(input_string, length):
 
 
 if __name__ == "__main__":
-    print(generate_uname(sys.argv[1]))
+    print(generate_uname(sys.argv[1], int(sys.argv[2])))
