@@ -15,7 +15,7 @@ def logout():
 
 def header(title):
     ui.page_title('Kairy')
-    with ui.header().classes('justify-between'):
+    with ui.header().classes('justify-between no-wrap'):
         with ui.row().classes('text-h4'):
             ui.label('🏠').on('click', lambda _:ui.navigate.to('/')).style('cursor: pointer;')
 
