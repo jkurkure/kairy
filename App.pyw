@@ -3,7 +3,7 @@
 # type: ignore
 from nicegui import ui, app
 from functools import partial 
-import uuid, importlib
+import uuid, importlib, env
 from utils import header, find, styles, section
 
 # This file is the main homepage of the app
@@ -11,12 +11,12 @@ from utils import header, find, styles, section
 # This sets the pages to be accessible from the home-page, depending on whether the user is logged in
 def pages():
     return [
-        ("about", "help", "About Bringka"),
+        about := ("about", "help", f"About {env.APP_NAME}"),
         ("request", "shopping_cart", "Order Delivery"),
         ("new", "flight_takeoff", "I'm Flying"),
         ("users", "badge", "Profile")
         ] if 'logIn' in app.storage.user else [
-        ("about", "help", "About Bringka"),
+        about,
         ("join", "person_add", "Create Account"),
         ("users", "diversity_3", "Log In")
     ]
@@ -24,7 +24,7 @@ def pages():
 # Here are the functions that get called when navigating to different pages in our website
 @ui.page('/')
 def main():
-    header('Bringka')
+    header(env.APP_NAME)
     styles('main')
 
     # This uses our list to populate a row of buttons for navigating to the pages

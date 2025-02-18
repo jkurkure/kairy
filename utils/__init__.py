@@ -38,7 +38,7 @@ def find(L, v, i):
             return x[i]
 
 def styles(path):
-    with open(f'styles/{path}.css') as f:
+    with open(f'resources/styles/{path}.css') as f:
         # This is how we add custom CSS (or any other header HTML) to the webpage
         ui.add_head_html(f'''
             <style type="text/tailwindcss">

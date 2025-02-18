@@ -15,7 +15,7 @@ def setProfilePic(e):
     ui.notify(f'Uploaded {e.name}')
     rawData = base64.b64encode(e.content.read())
 
-    uname = (database.getTable('Users').iloc[app.storage.user['logIn']])['username']
+    uname = (database.getTable('Users').iloc[app.storage.user['logIn']])['username'] # type: ignore
     app.storage.general['profile-pics'][uname] = f'data:{e.type};base64,{rawData.decode()}'
     ui.navigate.to('/app/users')
 
@@ -51,7 +51,7 @@ def show():
 
     else:
         i = app.storage.user['logIn']
-        record = database.getTable('Users').iloc[i]
+        record = database.getTable('Users').iloc[i] # type: ignore
         section(f"Welcome back, {record['username']}!")
 
         with ui.card().classes('box'):
@@ -82,7 +82,7 @@ def show():
                     with ui.column().classes('items-center'):
                         cc_record = database.getRow('Payment Methods', 'username', record['username'])[1]
 
-                        for cc_field in database.getTable('Payment Methods').columns:
+                        for cc_field in database.getTable('Payment Methods').columns: # type: ignore
                             if cc_field != 'username':
                                 ui.label(f"{cc_field}: {cc_record[cc_field][0]}").classes('text-h5')
 
@@ -105,7 +105,7 @@ def show():
                             with ui.element('div').classes('p-2 bg-orange-100'):
                                 formlabel('Security Code: ')
                             with ui.element('div').classes('p-2 bg-blue-100'):
-                                ui.number(placeholder=randrange(100, 999)).props('rounded outlined dense')
+                                ui.number(placeholder=randrange(100, 999)).props('rounded outlined dense') # type: ignore
 
                             with ui.element('div').classes('p-2 bg-orange-100'):
                                 formlabel('Expiry Date: ')
@@ -120,7 +120,7 @@ def show():
                             database.addRow('Payment Methods', record['username'], *[x.value for x in pay_dialog.descendants() if isinstance(x, fieldType)])
                             pay_dialog.close()
                             ui.notify('Payment method added successfully!')
-                            time.sleep(1.5)
+                            time.sleep(0.5)
                             ui.navigate.to('/app/users')
 
                         with ui.row():
