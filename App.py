@@ -56,4 +56,4 @@ async def monitor():
 app.on_startup(monitor)
 
 # This makes the web app visible at localhost:8080
-ui.run(on_air=env.secret('onair token'), storage_secret=f'{uuid.uuid4()}', favicon='💼', show=False)
+ui.run(on_air=env.secret('onair token'), storage_secret=f'{uuid.uuid4()}', favicon='💼', show=False, port=8081)
