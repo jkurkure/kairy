@@ -3,7 +3,7 @@
 # type: ignore
 from nicegui import ui, app
 from functools import partial 
-import uuid, importlib, env
+import uuid, importlib, env, asyncio
 from utils import header, find, styles, section
 
 # This file is the main homepage of the app
@@ -48,5 +48,12 @@ def App(page: str):
     body = importlib.import_module(f'pages.{page}')
     body.show()
 
-# This makes the web app visible at localhost:335
-ui.run(on_air=env.secret('onair token'), storage_secret=f'{uuid.uuid4()}', favicon='💼')
+async def monitor():
+    while True:
+        print(f'TESTVAR: {testVar}')
+        await asyncio.sleep(1)
+
+app.on_startup(monitor)
+
+# This makes the web app visible at localhost:8080
+ui.run(on_air=env.secret('onair token'), storage_secret=f'{uuid.uuid4()}', favicon='💼', show=False)
