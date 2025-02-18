@@ -29,5 +29,4 @@ jobs:
     - name: Reformat the code with Black
       run: |
         black ./
-        touch proof.py
     - uses: stefanzweifel/git-auto-commit-action@v4
