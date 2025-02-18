@@ -50,7 +50,7 @@ def App(page: str):
 
 async def monitor():
     while True:
-        print(f'TESTVAR: {testVar}')
+        print(f'The app is running at {env.APP_NAME}!')
         await asyncio.sleep(1)
 
 app.on_startup(monitor)

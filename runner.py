@@ -5,8 +5,8 @@ pop = subprocess.Popen([env.PYRUNNER, 'App.py'], stdout=subprocess.PIPE, stderr=
 print(f'{env.APP_NAME} is launched')
 
 while pop.poll() is None:
-    time.sleep(random.uniform(1/50, 2))
-    print(f'{env.APP_NAME} is running at {time.ctime()}')
+    # time.sleep(random.uniform(1/50, 2))
+    # print(f'{env.APP_NAME} is running at {time.ctime()}')
     output = pop.stdout.readline()
     if output:
         print(output.strip())
