@@ -2,6 +2,7 @@
 
 from twilio.rest import Client
 from nicegui import app
+import env
 
 if app.is_started:
     from phone_iso3166.country import *
@@ -28,7 +29,7 @@ class SMS:
         # Send SMS
         # in body part you have to write your message
         message = SMS.client.messages.create(
-            body=f"Use the OTP {OTP} to verify your phone number for Kairy",
+            body=f"Use the OTP {OTP} to verify your phone number for {env.APP_NAME}",
             from_=SMS.twilio_number,
             to=recipient,
         )

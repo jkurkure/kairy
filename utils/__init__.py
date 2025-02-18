@@ -2,6 +2,7 @@ from nicegui import ui, app
 import re, rstr, random
 import pandas as pd
 from .database import getTable
+import env
 
 # Here are some helper functions and variables
 def logout():
@@ -9,7 +10,7 @@ def logout():
     ui.navigate.to("/app/users")
 
 def header(title):
-    ui.page_title("Kairy")
+    ui.page_title(env.APP_NAME)
     with ui.header().classes("justify-between no-wrap"):
         with ui.row().classes("text-h4"):
             ui.label("🏠").on("click", lambda _: ui.navigate.to("/")).style(

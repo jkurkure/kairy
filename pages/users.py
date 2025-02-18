@@ -4,6 +4,7 @@ from .join import formlabel
 import base64
 from random import randrange
 import time
+from env import maintenance
 
 if "profile-pics" not in app.storage.general:
     app.storage.general["profile-pics"] = {}
@@ -31,7 +32,7 @@ def setProfilePic(e):
 
 def show():
     if database.getTable("Users") is None:
-        ui.label("Kairy App is closed for maintenance. Please check back later!")
+        maintenance()
 
     elif "logIn" not in app.storage.user:
         # Create a log-in page and use database to check if entered credentials are correct

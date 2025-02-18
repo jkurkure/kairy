@@ -1,5 +1,5 @@
 # kairy
-The main code for the Kairy web app
+The main code for the Bringka web app (formerly Kairy)
 
 ## Setup
 This requires Python 3.11 or higher.
