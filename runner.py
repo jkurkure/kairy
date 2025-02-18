@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.11
 import subprocess, env, time, random
 
-pop = subprocess.Popen([env.PYRUNNER, 'App.pyw'])
+pop = subprocess.Popen([env.PYRUNNER, 'App.py'])
 print(f'{env.APP_NAME} is launched')
 
 while pop.poll() is None:
