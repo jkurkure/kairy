@@ -3,6 +3,7 @@ from utils import database, section, logout, phones, randCC, randFullName, field
 from .join import formlabel
 import base64
 from random import randrange
+import time
 
 if 'profile-pics' not in app.storage.general:
     app.storage.general['profile-pics'] = {}
@@ -119,6 +120,8 @@ def show():
                             database.addRow('Payment Methods', record['username'], *[x.value for x in pay_dialog.descendants() if isinstance(x, fieldType)])
                             pay_dialog.close()
                             ui.notify('Payment method added successfully!')
+                            time.sleep(1.5)
+                            ui.navigate.to('/app/users')
 
                         with ui.row():
                             ui.button(icon='check', on_click=pay_submit).props('fab color=green')
@@ -127,7 +130,11 @@ def show():
                     ui.button(icon='wallet', on_click=pay_dialog.open).props('fab color=accent')
 
                     if not cc_off:
+                        def remove_cc(_):
+                            database.delRow('Payment Methods', 'username', record['username'])
+                            ui.navigate.to('/app/users')
+
                         section('Remove Payment Method')
-                        ui.button(icon='delete', on_click=lambda: database.delRow('Payment Methods', 'username', record['username'])).props('fab color=orange')
+                        ui.button(icon='delete', on_click=remove_cc).props('fab color=orange')
             
             
