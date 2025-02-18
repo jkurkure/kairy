@@ -1,15 +1,14 @@
 #!/usr/bin/env python3.11
 import subprocess, env
-s = subprocess.Popen(['python3.11', '/home/public/kairy/App.pyw'],stdin=subprocess.PIPE,
-    stdout=subprocess.PIPE,  # needed for the next line to be sensible
-    stderr=subprocess.STDOUT)
+
+s = subprocess.Popen([env.PYRUNNER, 'App.pyw'], stdin=subprocess.PIPE,
+    stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+
 print(f'{env.APP_NAME} is launched')
 
 while True:
-    try:
-        line = s.stdout.readline().decode('utf-8').strip() # type: ignore
-        if line == '':
-            break
-        print(line)
-    except KeyboardInterrupt:
+    output = s.stdout.readline() # type: ignore
+    if output == '' and s.poll() is not None:
         break
+    if output:
+        print(output.strip())
