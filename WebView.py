@@ -3,7 +3,7 @@ from nicegui import ui
 import env
 
 # Define the HTML and JavaScript for the button and window opening logic
-html_content = f'''
+html_content = f"""
 <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
     <button onclick="openWindow()" style="padding: 10px 20px; font-size: 16px;">
         Open {env.APP_NAME} in Browser
@@ -13,7 +13,7 @@ html_content = f'''
         Get {env.APP_NAME} from Play Store
     </button>
 </div>
-'''
+"""
 
 js_content = """
 <script>

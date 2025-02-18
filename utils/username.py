@@ -6,11 +6,10 @@ if app.is_started:
         from nltk.corpus import brown
     except:
         import nltk
+
         nltk.download("brown")
 
-data_dir = platformdirs.user_data_dir(
-    appname="uname-generator",
-    appauthor="kairy")
+data_dir = platformdirs.user_data_dir(appname="uname-generator", appauthor="kairy")
 if not os.path.exists(data_dir):
     os.makedirs(data_dir)
 file_path = os.path.join(data_dir, "tokens-archive.dat")
@@ -33,22 +32,27 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 # Replace the above with your own string of similar length on your local
 # copy to further perplex brute-force attempts.
 
-def simple_hasher(s): return sum([ord(c) for c in s])
-def easy_hasher(s): return eval('*'.join([str(ord(c)) for c in s]))
+
+def simple_hasher(s):
+    return sum([ord(c) for c in s])
+
+
+def easy_hasher(s):
+    return eval("*".join([str(ord(c)) for c in s]))
 
 
 def generate_uname(input_string, length):
     random.seed(
-        simple_hasher(SECRET_KEY) *
-        simple_hasher(input_string) +
-        easy_hasher(input_string))  # Set a fixed seed value
+        simple_hasher(SECRET_KEY) * simple_hasher(input_string)
+        + easy_hasher(input_string)
+    )  # Set a fixed seed value
 
     uname = []
 
     for _ in range(length):
         uname.append(random.choice(tokens))
 
-    return '-'.join(uname)
+    return "-".join(uname)
 
 
 if __name__ == "__main__":
