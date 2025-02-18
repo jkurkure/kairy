@@ -19,6 +19,7 @@ def authors():
 def maintenance():
     ui.label(f"{APP_NAME} App is closed for maintenance. Please check back later!")
 
+
 def secret(name):
     SECRET_PATH = "/home/private/.secrets"
     with open(SECRET_PATH, "rb") as f:

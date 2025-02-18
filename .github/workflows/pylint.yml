@@ -8,8 +8,16 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.11"]
+
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+      
     steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
@@ -21,3 +29,5 @@ jobs:
     - name: Reformat the code with Black
       run: |
         black ./
+        touch proof.py
+    - uses: stefanzweifel/git-auto-commit-action@v4

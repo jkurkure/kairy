@@ -31,11 +31,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 # Replace the above with your own string of similar length on your local
 # copy to further perplex brute-force attempts.
 
+
 def simple_hasher(s):
     return sum([ord(c) for c in s])
 
+
 def easy_hasher(s):
     return eval("*".join([str(ord(c)) for c in s]))
+
 
 def generate_uname(input_string, length):
     random.seed(
@@ -49,6 +52,7 @@ def generate_uname(input_string, length):
         uname.append(random.choice(tokens))
 
     return "-".join(uname)
+
 
 if __name__ == "__main__":
     print(generate_uname(sys.argv[1], int(sys.argv[2])))

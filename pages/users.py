@@ -20,6 +20,7 @@ if database.getTable("Payment Methods") is None:
         "Expiry Year",
     )
 
+
 def setProfilePic(e):
     ui.notify(f"Uploaded {e.name}")
     rawData = base64.b64encode(e.content.read())
@@ -29,6 +30,7 @@ def setProfilePic(e):
         uname
     ] = f"data:{e.type};base64,{rawData.decode()}"
     ui.navigate.to("/app/users")
+
 
 def show():
     if database.getTable("Users") is None:
@@ -63,6 +65,7 @@ def show():
                 ui.navigate.to("/")
             else:
                 ui.notify("Incorrect username or password", color="red")
+
         ui.button("Log In").on_click(login)
 
     else:
@@ -177,6 +180,7 @@ def show():
                             ui.notify("Payment method added successfully!")
                             time.sleep(0.5)
                             ui.navigate.to("/app/users")
+
                         with ui.row():
                             ui.button(icon="check", on_click=pay_submit).props(
                                 "fab color=green"
@@ -196,6 +200,7 @@ def show():
                                 "Payment Methods", "username", record["username"]
                             )
                             ui.navigate.to("/app/users")
+
                         section("Remove Payment Method")
                         ui.button(icon="delete", on_click=remove_cc).props(
                             "fab color=orange"
