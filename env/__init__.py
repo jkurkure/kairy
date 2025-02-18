@@ -8,6 +8,7 @@ APP_VERSION = f'{subprocess.Popen("git rev-parse --short HEAD", shell=True, stdo
     2:-3
 ]
 
+
 def authors():
     AUTHORS = [
         "Srihari Rangan",
@@ -15,6 +16,7 @@ def authors():
         "Arushi Bhatnagar",
     ]
     return ", ".join(AUTHORS[:-1]) + f" and {AUTHORS[-1]}"
+
 
 def maintenance():
     ui.label(f"{APP_NAME} App is closed for maintenance. Please check back later!")
