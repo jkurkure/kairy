@@ -24,7 +24,9 @@ def maintenance():
 
 
 def secret(name):
-    SECRET_PATH = _def if Path(_def := "/home/private/.secrets").exists() else "../.secrets"
+    SECRET_PATH = (
+        _def if Path(_def := "/home/private/.secrets").exists() else "../.secrets"
+    )
 
     with open(SECRET_PATH, "rb") as f:
         return pickle.load(f)[name]
