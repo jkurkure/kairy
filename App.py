@@ -56,13 +56,13 @@ def App(page: str):
     body.show()
 
 
-async def monitor():
-    while True:
-        print(f"The app is running at {env.APP_NAME}!")
-        await asyncio.sleep(1)
+# async def monitor():
+#     while True:
+#         print(f"The app is running at {env.APP_NAME}!")
+#         await asyncio.sleep(1)
 
 
-app.on_startup(monitor)
+# app.on_startup(monitor)
 
 # This makes the web app visible at localhost:8080
 ui.run(
