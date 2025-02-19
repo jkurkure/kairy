@@ -80,6 +80,7 @@ def randCC():
 
 firstNames = lastNames = None
 
+
 def randFullName():
     if firstNames and lastNames:
         return f"{random.choice(firstNames)} {random.choice(lastNames)}"
@@ -90,9 +91,9 @@ def randFullName():
         lastNames = list(
             nd.get_top_names(n=100, use_first_names=False, country_alpha2="SG")["SG"]
         )
-        firstNames = list(nd.get_top_names(n=100, country_alpha2="SG")["SG"]["M"]) + list(
-            nd.get_top_names(n=100, country_alpha2="SG")["SG"]["F"]
-        )
+        firstNames = list(
+            nd.get_top_names(n=100, country_alpha2="SG")["SG"]["M"]
+        ) + list(nd.get_top_names(n=100, country_alpha2="SG")["SG"]["F"])
 
         return randFullName()
 
