@@ -80,12 +80,13 @@ def randCC():
 
 firstNames = lastNames = False
 
+
 def randFullName():
     global firstNames, lastNames
 
     if firstNames and lastNames:
         return f"{random.choice(firstNames)} {random.choice(lastNames)}"
-    
+
     else:
         from names_dataset import NameDataset
 
