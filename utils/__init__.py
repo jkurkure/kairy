@@ -78,12 +78,14 @@ def randCC():
     return f"{int(rstr.xeger(ccRegex)):,}".replace(",", " ")
 
 
-firstNames = lastNames = None
-
+firstNames = lastNames = False
 
 def randFullName():
+    global firstNames, lastNames
+
     if firstNames and lastNames:
         return f"{random.choice(firstNames)} {random.choice(lastNames)}"
+    
     else:
         from names_dataset import NameDataset
 
