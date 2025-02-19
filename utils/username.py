@@ -1,6 +1,7 @@
 import random, sys, platformdirs, pickle, os
 from nicegui import app
 
+
 if app.is_started:
     try:
         from nltk.corpus import brown
