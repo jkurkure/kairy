@@ -3,6 +3,7 @@ import re, rstr, random
 import pandas as pd
 from .database import getTable
 import env
+from threading import Thread
 
 
 # Here are some helper functions and variables
@@ -78,7 +79,12 @@ def randCC():
     return f"{int(rstr.xeger(ccRegex)):,}".replace(",", " ")
 
 
-if app.is_started:
+firstNames = lastNames = False
+
+
+def setupNames():
+    global firstNames, lastNames
+
     from names_dataset import NameDataset
 
     nd = NameDataset()
@@ -91,7 +97,14 @@ if app.is_started:
 
 
 def randFullName():
-    return f"{random.choice(firstNames)} {random.choice(lastNames)}"
+    global firstNames, lastNames
+
+    if firstNames and lastNames:
+        return f"{random.choice(firstNames)} {random.choice(lastNames)}"
+
+    else:
+        Thread(target=setupNames).start()
+        return "Peggy Miah"
 
 
 fieldType = ui.input | ui.number
