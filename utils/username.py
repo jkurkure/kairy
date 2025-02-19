@@ -1,14 +1,12 @@
 import random, sys, platformdirs, pickle, os
 from nicegui import app
 
+try:
+    from nltk.corpus import brown
+except:
+    import nltk
 
-if app.is_started:
-    try:
-        from nltk.corpus import brown
-    except:
-        import nltk
-
-        nltk.download("brown")
+    nltk.download("brown")
 
 data_dir = platformdirs.user_data_dir(appname="uname-generator", appauthor="kairy")
 if not os.path.exists(data_dir):

@@ -3,6 +3,7 @@ import re, rstr, random
 import pandas as pd
 from .database import getTable
 import env
+from threading import Thread
 
 
 # Here are some helper functions and variables
@@ -80,6 +81,19 @@ def randCC():
 
 firstNames = lastNames = False
 
+def setupNames():
+    global firstNames, lastNames
+
+    from names_dataset import NameDataset
+
+    nd = NameDataset()
+    lastNames = list(
+        nd.get_top_names(n=100, use_first_names=False, country_alpha2="SG")["SG"]
+    )
+    firstNames = list(
+        nd.get_top_names(n=100, country_alpha2="SG")["SG"]["M"]
+    ) + list(nd.get_top_names(n=100, country_alpha2="SG")["SG"]["F"])
+
 
 def randFullName():
     global firstNames, lastNames
@@ -88,17 +102,8 @@ def randFullName():
         return f"{random.choice(firstNames)} {random.choice(lastNames)}"
 
     else:
-        from names_dataset import NameDataset
-
-        nd = NameDataset()
-        lastNames = list(
-            nd.get_top_names(n=100, use_first_names=False, country_alpha2="SG")["SG"]
-        )
-        firstNames = list(
-            nd.get_top_names(n=100, country_alpha2="SG")["SG"]["M"]
-        ) + list(nd.get_top_names(n=100, country_alpha2="SG")["SG"]["F"])
-
-        return randFullName()
+        Thread(target=setupNames).start()
+        return 'Peggy Miah'
 
 
 fieldType = ui.input | ui.number
