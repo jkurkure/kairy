@@ -148,7 +148,7 @@ def show():
                             with ui.element("div").classes("p-2 bg-orange-100"):
                                 formlabel("Card Holder Name: ")
                             with ui.element("div").classes("p-2 bg-blue-100"):
-                                ui.input(placeholder=randFullName()).props(
+                                ui.input(placeholder=randFullName(), validation=lambda value: 'Only letters in your name please' if value.isalpha() else None).props(
                                     "rounded outlined dense"
                                 )
 
