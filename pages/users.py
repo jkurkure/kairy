@@ -4,6 +4,7 @@ from .join import formlabel
 import base64
 from random import randrange
 import time
+from datetime import datetime
 from env import maintenance
 
 if "profile-pics" not in app.storage.general:
@@ -151,17 +152,17 @@ def show():
                             with ui.element("div").classes("p-2 bg-orange-100"):
                                 formlabel("Security Code: ")
                             with ui.element("div").classes("p-2 bg-blue-100"):
-                                ui.number(placeholder=randrange(100, 999)).props("rounded outlined dense")  # type: ignore
+                                ui.number(placeholder=randrange(100, 999), min=100, max=999).props("rounded outlined dense")  # type: ignore
 
                             with ui.element("div").classes("p-2 bg-orange-100"):
                                 formlabel("Expiry Date: ")
                             with ui.element("div").classes("p-2 bg-blue-100"):
                                 with ui.row().classes("no-wrap"):
-                                    ui.number(placeholder="MM").props(
+                                    ui.number(placeholder="MM", min=1, max=12).props(
                                         "rounded outlined dense"
                                     )
                                     ui.label("/")
-                                    ui.number(placeholder="YYYY").props(
+                                    ui.number(placeholder="YYYY", min=datetime.now().year).props(
                                         "rounded outlined dense"
                                     )
 
