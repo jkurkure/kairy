@@ -11,7 +11,7 @@ from utils import (
     database,
     dateCheck,
     unique,
-    fieldType
+    fieldType,
 )
 import uuid
 from itertools import chain
@@ -52,8 +52,6 @@ def phone():
 
     setattr(form := Form(), "valid", False)
 
-    
-
     with ui.grid(columns=2):
         with ui.element("div").classes("p-2 bg-orange-100"):
             formlabel("Username: ")
@@ -69,7 +67,6 @@ def phone():
                 password_toggle_button=True,
                 value=password.generate_password(f"{uuid.uuid4()}", 14),
             ).props("rounded outlined dense")
-
 
         with ui.element("div").classes("p-2 bg-orange-100"):
             formlabel("Confirm Password: ")
@@ -111,7 +108,7 @@ def phone():
                 ).props("rounded outlined dense").style("width: 60%;")
                 result = ui.label()
 
-    fields = list(ElementFilter(kind=fieldType)) # type: ignore
+    fields = list(ElementFilter(kind=fieldType))  # type: ignore
 
     def formValidCheck(_):
         form.valid = pword_cfm.value == pword.value and (False not in [field.value not in [None, ""] for field in fields]) and dateCheck(date.value)  # type: ignore

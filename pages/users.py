@@ -165,9 +165,9 @@ def show():
                                         "rounded outlined dense"
                                     )
                                     ui.label("/")
-                                    ui.number(placeholder="YYYY", min=datetime.now().year).props(
-                                        "rounded outlined dense"
-                                    )
+                                    ui.number(
+                                        placeholder="YYYY", min=datetime.now().year
+                                    ).props("rounded outlined dense")
 
                         def pay_submit(e):
                             database.addRow(
