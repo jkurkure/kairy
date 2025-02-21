@@ -59,9 +59,8 @@ def show():
 
         def login(_):
             i, record = database.getRow("Users", "username", uname.value)
-
-            if not record.empty and record["password"][0] == pword.value:
-                app.storage.user["logIn"] = i.to_list()[0]
+            if not record.empty and record["password"][ID := i.to_list()[0]] == pword.value:
+                app.storage.user["logIn"] = ID
                 ui.navigate.to("/")
             else:
                 ui.notify("Incorrect username or password", color="red")

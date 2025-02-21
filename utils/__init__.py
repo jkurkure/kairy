@@ -1,3 +1,4 @@
+import pickle
 from nicegui import ui, app
 import re, rstr, random
 import pandas as pd
@@ -79,32 +80,9 @@ def randCC():
     return f"{int(rstr.xeger(ccRegex)):,}".replace(",", " ")
 
 
-firstNames = lastNames = False
-
-
-def setupNames():
-    global firstNames, lastNames
-
-    from names_dataset import NameDataset
-
-    nd = NameDataset()
-    lastNames = list(
-        nd.get_top_names(n=100, use_first_names=False, country_alpha2="SG")["SG"]
-    )
-    firstNames = list(nd.get_top_names(n=100, country_alpha2="SG")["SG"]["M"]) + list(
-        nd.get_top_names(n=100, country_alpha2="SG")["SG"]["F"]
-    )
-
+firstNames, lastNames = pickle.load(open("resources/data/names.pkl", "rb"))
 
 def randFullName():
-    global firstNames, lastNames
-
-    if firstNames and lastNames:
-        return f"{random.choice(firstNames)} {random.choice(lastNames)}"
-
-    else:
-        Thread(target=setupNames).start()
-        return "Peggy Miah"
-
+    return f"{random.choice(firstNames)} {random.choice(lastNames)}"
 
 fieldType = ui.input | ui.number
