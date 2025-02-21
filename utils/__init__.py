@@ -82,7 +82,9 @@ def randCC():
 
 firstNames, lastNames = pickle.load(open("resources/data/names.pkl", "rb"))
 
+
 def randFullName():
     return f"{random.choice(firstNames)} {random.choice(lastNames)}"
+
 
 fieldType = ui.input | ui.number
