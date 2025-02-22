@@ -1,3 +1,5 @@
+from datetime import datetime
+import env
 from nicegui import ElementFilter, ui
 from functools import partial
 from utils import (
@@ -111,7 +113,7 @@ def phone():
     fields = list(ElementFilter(kind=fieldType))  # type: ignore
 
     def formValidCheck(_):
-        form.valid = pword_cfm.value == pword.value and (False not in [field.value not in [None, ""] for field in fields]) and dateCheck(date.value)  # type: ignore
+        form.valid = pword_cfm.value == pword.value and (False not in [field.value not in [None, ""] for field in fields]) and dateCheck(date.value, allow_yrs=range(datetime.now().year - 100, datetime.now().year - env.MIN_AGE))  # type: ignore
 
     [field.on("change", formValidCheck) for field in fields]
 

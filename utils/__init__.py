@@ -4,7 +4,6 @@ import re, rstr, random
 import pandas as pd
 from .database import getTable
 import env
-from threading import Thread
 
 
 # Here are some helper functions and variables
@@ -67,8 +66,8 @@ class Form:
     pass
 
 
-def dateCheck(date):
-    return re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", re.IGNORECASE).match(date)
+def dateCheck(date, allow_yrs=None):
+    return re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", re.IGNORECASE).match(date) and (not(allow_yrs) or int(date[:4]) in allow_yrs)
 
 
 def unique(L):

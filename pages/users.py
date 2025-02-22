@@ -141,14 +141,14 @@ def show():
                             with ui.element("div").classes("p-2 bg-orange-100"):
                                 formlabel("Card Number: ")
                             with ui.element("div").classes("p-2 bg-blue-100"):
-                                ui.number(placeholder=randCC()).props(
+                                ui.number(placeholder=randCC(), min=1e15, max=1e20).props(
                                     "rounded outlined dense"
                                 )
 
                             with ui.element("div").classes("p-2 bg-orange-100"):
                                 formlabel("Card Holder Name: ")
                             with ui.element("div").classes("p-2 bg-blue-100"):
-                                ui.input(placeholder=randFullName(), validation=lambda value: 'Only letters in your name please' if value.isalpha() else None).props(
+                                ui.input(placeholder=randFullName(), validation=lambda value: 'Only letters in your name please' if not value.replace(' ', '').isalpha() else None).props(
                                     "rounded outlined dense"
                                 )
 
