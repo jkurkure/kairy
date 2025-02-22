@@ -67,7 +67,9 @@ class Form:
 
 
 def dateCheck(date, allow_yrs=None):
-    return re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", re.IGNORECASE).match(date) and (not(allow_yrs) or int(date[:4]) in allow_yrs)
+    return re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", re.IGNORECASE).match(date) and (
+        not (allow_yrs) or int(date[:4]) in allow_yrs
+    )
 
 
 def unique(L):

@@ -12,7 +12,7 @@ APP_VERSION = f'{subprocess.Popen("git rev-parse --short HEAD", shell=True, stdo
 MIN_AGE = 16
 MAX_ADVANCE_YRS = 2
 
-ALLOWED_COUNTRIES = ['India', 'Singapore']
+ALLOWED_COUNTRIES = ["India", "Singapore"]
 
 
 def authors():
