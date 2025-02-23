@@ -15,8 +15,8 @@ def pages():
     return (
         [
             about,
-            ("request", "shopping_cart", "Order Delivery"),
-            ("new", "flight_takeoff", "I'm Flying"),
+            ("request", "shopping_cart", "Request Delivery"),
+            ("flyer", "flight_takeoff", "I'm Flying"),
             ("users", "badge", "Profile"),
         ]
         if "logIn" in nicegui.app.storage.user
