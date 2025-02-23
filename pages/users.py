@@ -78,7 +78,9 @@ def show():
         utils.section(f"Welcome back, {record['username']}!")
 
         with nicegui.ui.card().classes("box"):
-            pp_off = record["username"] not in nicegui.app.storage.general["profile-pics"]
+            pp_off = (
+                record["username"] not in nicegui.app.storage.general["profile-pics"]
+            )
             with nicegui.ui.grid(columns=1 if pp_off else 2):
                 if not pp_off:
                     nicegui.ui.image(
@@ -103,9 +105,9 @@ def show():
                     ",", " "
                 )
             ).classes("text-h5")
-            nicegui.ui.label(f"Country: {' '.join(phones.where(record['country']))}").classes(
-                "text-h5"
-            )
+            nicegui.ui.label(
+                f"Country: {' '.join(phones.where(record['country']))}"
+            ).classes("text-h5")
 
             with nicegui.ui.row():
                 nicegui.ui.button("Edit Profile")
@@ -135,7 +137,9 @@ def show():
 
                 with nicegui.ui.column().classes("items-center"):
                     utils.section(f"{'Add' if cc_off else 'Change'} Payment Method")
-                    with nicegui.ui.dialog() as pay_dialog, nicegui.ui.card().classes("items-center"):
+                    with nicegui.ui.dialog() as pay_dialog, nicegui.ui.card().classes(
+                        "items-center"
+                    ):
                         utils.section("Enter your payment details")
 
                         with nicegui.ui.grid(columns=2):
@@ -167,12 +171,13 @@ def show():
                                 join.formlabel("Expiry Date: ")
                             with nicegui.ui.element("div").classes("p-2 bg-blue-100"):
                                 with nicegui.ui.row().classes("no-wrap"):
-                                    nicegui.ui.number(placeholder="MM", min=1, max=12).props(
-                                        "rounded outlined dense"
-                                    )
+                                    nicegui.ui.number(
+                                        placeholder="MM", min=1, max=12
+                                    ).props("rounded outlined dense")
                                     nicegui.ui.label("/")
                                     nicegui.ui.number(
-                                        placeholder="YYYY", min=datetime.datetime.now().year
+                                        placeholder="YYYY",
+                                        min=datetime.datetime.now().year,
                                     ).props("rounded outlined dense")
 
                         def pay_submit(e):
@@ -194,9 +199,9 @@ def show():
                             nicegui.ui.button(icon="check", on_click=pay_submit).props(
                                 "fab color=green"
                             )
-                            nicegui.ui.button(icon="close", on_click=pay_dialog.close).props(
-                                "fab color=red"
-                            )
+                            nicegui.ui.button(
+                                icon="close", on_click=pay_dialog.close
+                            ).props("fab color=red")
 
                     nicegui.ui.button(icon="wallet", on_click=pay_dialog.open).props(
                         "fab color=accent"
