@@ -41,8 +41,8 @@ def location(record, formValidCheck):
                             )
 
                 m = nicegui.ui.leaflet(
-                    center=addresses.getCenter(phones.where(record["country"])), zoom=10 # type: ignore
-                )  
+                    center=addresses.getCenter(phones.where(record["country"])), zoom=10  # type: ignore
+                )
                 test_mark = m.marker(latlng=(1.3521, 103.8198))
 
                 def handle_click(e: events.GenericEventArguments):
@@ -159,7 +159,9 @@ def show():
                         + [photo]
                     ),
                 )
-                success_dialog = dialogs.order_success_dialog(functools.partial(nicegui.ui.navigate.to, "/app/users"))
+                success_dialog = dialogs.order_success_dialog(
+                    functools.partial(nicegui.ui.navigate.to, "/app/users")
+                )
                 success_dialog.open()
 
         nicegui.ui.button("List").props("rounded outlined").bind_enabled_from(
