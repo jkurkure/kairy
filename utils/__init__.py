@@ -86,3 +86,5 @@ def randCC():
 
 def randFullName():
     return f"{random.choice(firstNames)} {random.choice(lastNames)}"
+
+def funcChain(*fs): return lambda: [f() for f in fs]
