@@ -11,8 +11,10 @@ import env
 fieldType = ui.input | ui.number
 firstNames, lastNames = pickle.load(open("resources/data/names.pkl", "rb"))
 
+
 class Form:
     pass
+
 
 def logout():
     app.storage.user.clear()
