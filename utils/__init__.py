@@ -7,6 +7,13 @@ import env
 
 
 # Here are some helper functions and variables
+
+fieldType = ui.input | ui.number
+firstNames, lastNames = pickle.load(open("resources/data/names.pkl", "rb"))
+
+class Form:
+    pass
+
 def logout():
     app.storage.user.clear()
     ui.navigate.to("/app/users")
@@ -62,10 +69,6 @@ def section(text, color=0x6E93D6, size=200):
     ui.label(text).style(f"color: #{color:x}; font-size: {size}%; font-weight: 300")
 
 
-class Form:
-    pass
-
-
 def dateCheck(date, allow_yrs=None):
     return re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", re.IGNORECASE).match(date) and (
         not (allow_yrs) or int(date[:4]) in allow_yrs
@@ -81,11 +84,5 @@ def randCC():
     return f"{int(rstr.xeger(ccRegex)):,}".replace(",", " ")
 
 
-firstNames, lastNames = pickle.load(open("resources/data/names.pkl", "rb"))
-
-
 def randFullName():
     return f"{random.choice(firstNames)} {random.choice(lastNames)}"
-
-
-fieldType = ui.input | ui.number
