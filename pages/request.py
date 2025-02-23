@@ -34,7 +34,9 @@ def location(record, formValidCheck):
                     with nicegui.ui.input().on("blur", findPlace) as search:
                         search.classes("no-form")
                         with search.add_slot("prepend"):
-                            search_icon = nicegui.ui.icon("search").classes("cursor-pointer")
+                            search_icon = nicegui.ui.icon("search").classes(
+                                "cursor-pointer"
+                            )
 
                 m = nicegui.ui.leaflet(
                     center=addresses.getCenter(phones.where(record["country"])), zoom=10
@@ -110,7 +112,9 @@ def show():
                             lambda e: formValidCheck(e)
                         ):
                             with nicegui.ui.row().classes("justify-end"):
-                                nicegui.ui.button("Close", on_click=menu.close).props("flat")
+                                nicegui.ui.button("Close", on_click=menu.close).props(
+                                    "flat"
+                                )
                     with date.add_slot("append"):
                         nicegui.ui.icon("edit_calendar").on("click", menu.open).classes(
                             "cursor-pointer"
@@ -156,6 +160,6 @@ def show():
                 )
                 nicegui.ui.navigate.to("/app/users")
 
-        nicegui.ui.button("List").props("rounded outlined").bind_enabled_from(form, "valid").on(
-            "click", listItem
-        )
+        nicegui.ui.button("List").props("rounded outlined").bind_enabled_from(
+            form, "valid"
+        ).on("click", listItem)
