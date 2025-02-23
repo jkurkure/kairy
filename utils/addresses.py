@@ -1,29 +1,42 @@
 from geopy.geocoders import Nominatim
-from numpy import arange
-import pickle
+import uuid, time
 
-geolocator = Nominatim(user_agent="kairy")
-countries = [
-    {'Singapore': (
-        arange(1.249187, 1.471469, 1e-5),
-        arange(103.612408, 104.03, 1e-5)
-    )},
+def geolocator():
+    return Nominatim(user_agent=f"kairy{uuid.uuid4()}")
 
-    {'India': (
-        arange(8, 37.2, 1e-5),
-        arange(68, 97.42, 1e-5)
-    )}
-]
+center_memo = {}
+def getCenter(country):
+    if country in center_memo:
+        return center_memo[country]
+    location = geolocator().geocode(country)
+    if location:
+        center_memo[country] = (location.latitude, location.longitude) # type: ignore
+        return center_memo[country]
+    else:
+        time.sleep(2)
+        return getCenter(country)
 
-addresses = {}
-for country in countries:
-    for name, (lats, lons) in country.items():
-        addresses[name] = set()
-        for lat, lon in zip(lats, lons):
-            if geolocator.reverse(f"{lat}, {lon}") and geolocator.reverse(f"{lat}, {lon}").address not in addresses[name]:
-                addresses[name].add(geolocator.reverse(f"{lat}, {lon}").address)
+name_memo = {}  
+def getName(lat, lng):
+    if (lat, lng) in name_memo:
+        return name_memo[(lat, lng)]
+    
+    location = geolocator().reverse(f"{lat}, {lng}")
+    name_memo[(lat, lng)] = location.address # type: ignore
+    return name_memo[(lat, lng)]
 
-    with open("../resources/data/addresses.pkl", "wb") as f:
-        pickle.dump(addresses, f)
-
-print(addresses)
+lookfor_memo = {}
+def lookFor(name):
+    if name in lookfor_memo:
+        return lookfor_memo[name]
+    
+    try:
+        location = geolocator().geocode(name)
+        if location:
+            lookfor_memo[name] = (location.latitude, location.longitude) # type: ignore
+            return lookfor_memo[name]
+        else:
+            return (None, None)
+    except:
+        time.sleep(2)
+        return lookFor(name)
