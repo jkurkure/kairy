@@ -1,26 +1,31 @@
 from datetime import datetime
 import env
-from nicegui import ElementFilter, ui
+from nicegui import ui
 from functools import partial
 from utils import (
-    styles,
-    section,
     header,
+    section,
+    styles,
     username,
     password,
     phones,
-    Form,
     database,
-    dateCheck,
     unique,
-    fieldType,
 )
 import uuid
-from itertools import chain
+from utils.forms import (
+    Form,
+    create_form_label,
+    create_date_input,
+    get_form_fields,
+    setup_validation,
+    create_form_row
+)
 
 registerTypes = [("Phone Number", "phone"), ("Google Accounts", "google")]
 
-formlabel = partial(section, size=120)
+# Alias for backward compatibility
+formlabel = create_form_label
 
 if database.getTable("Users") is None:
     database.newTable("Users", "username", "password", "birth", "phone", "country")
@@ -45,80 +50,67 @@ def show():
 @ui.page("/app/join/google")
 def google():
     header("Create Account")
-    section("Under construction!")
+    create_form_label("Under construction!")
 
 
 @ui.page("/app/join/phone")
 def phone():
     header("Create Account")
 
-    setattr(form := Form(), "valid", False)
+    form = Form()
 
     with ui.grid(columns=2):
-        with ui.element("div").classes("p-2 bg-orange-100"):
-            formlabel("Username: ")
-        with ui.element("div").classes("p-2 bg-blue-100"):
-            ui.input(value=username.generate_uname(f"{uuid.uuid4()}", 2)).props(
-                "rounded outlined dense"
-            )
+        create_form_row(
+            "Username: ",
+            ui.input,
+            {'value':username.generate_uname(f"{uuid.uuid4()}", 2)}
+        )
+
+        pword = create_form_row(
+            "Password: ",
+            ui.input,
+            {'password_toggle_button':True,
+            'value':password.generate_password(f"{uuid.uuid4()}", 14)}
+        )
+
+        pword_cfm = create_form_row(
+            "Confirm Password: ",
+            ui.input,
+            {'password':True, 'password_toggle_button':True}
+        )
+
+        date = create_form_row(
+            "Date of Birth",
+            create_date_input,
+            {'on_change_callback':lambda e: formValidCheck(e)}
+        )
+
+        create_form_row(
+            "Phone Number: ",
+            ui.number, 
+            {'placeholder':"Without country code"}
+        )
 
         with ui.element("div").classes("p-2 bg-orange-100"):
-            formlabel("Password: ")
-        with ui.element("div").classes("p-2 bg-blue-100"):
-            pword = ui.input(
-                password_toggle_button=True,
-                value=password.generate_password(f"{uuid.uuid4()}", 14),
-            ).props("rounded outlined dense")
-
-        with ui.element("div").classes("p-2 bg-orange-100"):
-            formlabel("Confirm Password: ")
-        with ui.element("div").classes("p-2 bg-blue-100"):
-            pword_cfm = ui.input(password=True, password_toggle_button=True).props(
-                "rounded outlined dense"
-            )
-
-        with ui.element("div").classes("p-2 bg-orange-100"):
-            formlabel("Date of Birth")
-        with ui.element("div").classes("p-2 bg-blue-100"):
-            with ui.input("Date") as date:
-                with ui.menu().props("no-parent-event") as menu:
-                    with ui.date().bind_value(date).on_value_change(
-                        lambda e: formValidCheck(e)
-                    ):
-                        with ui.row().classes("justify-end"):
-                            ui.button("Close", on_click=menu.close).props("flat")
-                with date.add_slot("append"):
-                    ui.icon("edit_calendar").on("click", menu.open).classes(
-                        "cursor-pointer"
-                    )
-
-        with ui.element("div").classes("p-2 bg-orange-100"):
-            formlabel("Phone Number: ")
-        with ui.element("div").classes("p-2 bg-blue-100"):
-            ui.number(placeholder="Without country code").props(
-                "rounded outlined dense"
-            )
-
-        with ui.element("div").classes("p-2 bg-orange-100"):
-            formlabel("Country Code: ")
+            create_form_label("Country Code: ")
         with ui.element("div").classes("p-2 bg-blue-100"):
             with ui.row():
-                formlabel("+", color=0x222)
+                create_form_label("+", color=0x222)
                 ui.number(
                     placeholder="91",
                     on_change=lambda e: result.set_text(phones.where(f"+{e.value}")[0]),
                 ).props("rounded outlined dense").style("width: 60%;")
                 result = ui.label()
 
-    fields = list(ElementFilter(kind=fieldType))  # type: ignore
+    fields = get_form_fields()
 
-    def formValidCheck(_):
-        form.valid = pword_cfm.value == pword.value and (False not in [field.value not in [None, ""] for field in fields]) and dateCheck(date.value, allow_yrs=range(datetime.now().year - 100, datetime.now().year - env.MIN_AGE))  # type: ignore
+    def custom_validation():
+        return pword_cfm.value == pword.value
 
-    [field.on("change", formValidCheck) for field in fields]
+    formValidCheck = setup_validation(form, fields, date, {'min_age': env.MIN_AGE}, custom_validation)
 
     def createAccount(e):
-        if form.valid:  # type: ignore
+        if form.valid:
             if database.hasCell("Users", "username", fields[0].value):
                 ui.notify("That username is taken!")
             else:
