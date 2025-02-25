@@ -66,7 +66,6 @@ if __name__ in {"__main__", "__mp_main__"}:
         # This uses our list to populate a row of buttons for navigating to the pages
         create_navigation_buttons(get_main_pages())
 
-
     # This allows pages to be created as long as
     #   1. They are included in the pages list in this file
     #   2. There is a <page-name>.py file in the pages folder that has a show method to display its contents
@@ -74,10 +73,8 @@ if __name__ in {"__main__", "__mp_main__"}:
     def App(page: str):
         load_subpage(page, page, get_main_pages())
 
-
     # This adds the messenger page to the website
     importlib.import_module("pages.message")
-
 
     # This makes the web app visible at localhost:8080
     nicegui.ui.run(
@@ -88,9 +85,8 @@ if __name__ in {"__main__", "__mp_main__"}:
         port=8081,
     )
 
-
     # Only enable in debug mode
-    if '--debug' in sys.argv:
+    if "--debug" in sys.argv:
         import asyncio
 
         def debug():
