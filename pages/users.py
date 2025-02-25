@@ -1,16 +1,18 @@
-from nicegui import ui, app
-from utils import database, section, logout, phones, randCC, randFullName, fieldType
-from .join import formlabel
+import nicegui
+import utils
+import utils.phones as phones
+import pages.join as join
 import base64
-from random import randrange
+import random
 import time
-from env import maintenance
+import datetime
+import env
 
-if "profile-pics" not in app.storage.general:
-    app.storage.general["profile-pics"] = {}
+if "profile-pics" not in nicegui.app.storage.general:
+    nicegui.app.storage.general["profile-pics"] = {}
 
-if database.getTable("Payment Methods") is None:
-    database.newTable(
+if utils.database.getTable("Payment Methods") is None:
+    utils.database.newTable(
         "Payment Methods",
         "username",
         "Card Number",
@@ -22,186 +24,198 @@ if database.getTable("Payment Methods") is None:
 
 
 def setProfilePic(e):
-    ui.notify(f"Uploaded {e.name}")
+    nicegui.ui.notify(f"Uploaded {e.name}")
     rawData = base64.b64encode(e.content.read())
 
-    uname = (database.getTable("Users").iloc[app.storage.user["logIn"]])["username"]  # type: ignore
-    app.storage.general["profile-pics"][
+    uname = (utils.database.getTable("Users").iloc[nicegui.app.storage.user["logIn"]])["username"]  # type: ignore
+    nicegui.app.storage.general["profile-pics"][
         uname
     ] = f"data:{e.type};base64,{rawData.decode()}"
-    ui.navigate.to("/app/users")
+    nicegui.ui.navigate.to("/app/users")
 
 
 def show():
-    if database.getTable("Users") is None:
-        maintenance()
+    if utils.database.getTable("Users") is None:
+        env.maintenance()
 
-    elif "logIn" not in app.storage.user:
+    elif "logIn" not in nicegui.app.storage.user:
         # Create a log-in page and use database to check if entered credentials are correct
         # If so, redirect to the user's page
         # If not, display an error message
-        with ui.grid(columns=2):
-            with ui.element("div").classes("p-2 bg-orange-100"):
-                formlabel("Username: ")
-            with ui.element("div").classes("p-2 bg-blue-100"):
-                uname = ui.input(placeholder="Enter your username").props(
+        with nicegui.ui.grid(columns=2):
+            with nicegui.ui.element("div").classes("p-2 bg-orange-100"):
+                join.formlabel("Username: ")
+            with nicegui.ui.element("div").classes("p-2 bg-blue-100"):
+                uname = nicegui.ui.input(placeholder="Enter your username").props(
                     "rounded outlined dense"
                 )
 
-            with ui.element("div").classes("p-2 bg-orange-100"):
-                formlabel("Password: ")
-            with ui.element("div").classes("p-2 bg-blue-100"):
-                pword = ui.input(
+            with nicegui.ui.element("div").classes("p-2 bg-orange-100"):
+                join.formlabel("Password: ")
+            with nicegui.ui.element("div").classes("p-2 bg-blue-100"):
+                pword = nicegui.ui.input(
                     password=True,
                     password_toggle_button=True,
                     placeholder="Enter your password",
                 ).props("rounded outlined dense")
 
         def login(_):
-            i, record = database.getRow("Users", "username", uname.value)
-
-            if not record.empty and record["password"][0] == pword.value:
-                app.storage.user["logIn"] = i.to_list()[0]
-                ui.navigate.to("/")
+            i, record = utils.database.getRow("Users", "username", uname.value)
+            if (
+                not record.empty
+                and record["password"][ID := i.to_list()[0]] == pword.value
+            ):
+                nicegui.app.storage.user["logIn"] = ID
+                nicegui.ui.navigate.to("/")
             else:
-                ui.notify("Incorrect username or password", color="red")
+                nicegui.ui.notify("Incorrect username or password", color="red")
 
-        ui.button("Log In").on_click(login)
+        nicegui.ui.button("Log In").on_click(login)
 
     else:
-        i = app.storage.user["logIn"]
-        record = database.getTable("Users").iloc[i]  # type: ignore
-        section(f"Welcome back, {record['username']}!")
+        i = nicegui.app.storage.user["logIn"]
+        record = utils.database.getTable("Users").iloc[i]  # type: ignore
+        utils.section(f"Welcome back, {record['username']}!")
 
-        with ui.card().classes("box"):
-            pp_off = record["username"] not in app.storage.general["profile-pics"]
-            with ui.grid(columns=1 if pp_off else 2):
+        with nicegui.ui.card().classes("box"):
+            pp_off = (
+                record["username"] not in nicegui.app.storage.general["profile-pics"]
+            )
+            with nicegui.ui.grid(columns=1 if pp_off else 2):
                 if not pp_off:
-                    ui.image(
-                        app.storage.general["profile-pics"][record["username"]]
+                    nicegui.ui.image(
+                        nicegui.app.storage.general["profile-pics"][record["username"]]
                     ).style("max-height: 280px")
 
-                with ui.column():
-                    section(f"{'Add' if pp_off else 'Change'} Profile Picture")
-                    ui.upload(
+                with nicegui.ui.column():
+                    utils.section(f"{'Add' if pp_off else 'Change'} Profile Picture")
+                    nicegui.ui.upload(
                         on_upload=setProfilePic,
-                        on_rejected=lambda: ui.notify(
+                        on_rejected=lambda: nicegui.ui.notify(
                             "Profile Picture is maximum 4.5MB!"
                         ),
                         max_file_size=4_500_000,
                         max_files=1,
                     ).classes("max-w-full")
 
-        with ui.card().classes("info"):
-            ui.label(f"Date-of-birth: {record['birth']}").classes("text-h5")
-            ui.label(
+        with nicegui.ui.card().classes("info"):
+            nicegui.ui.label(f"Date-of-birth: {record['birth']}").classes("text-h5")
+            nicegui.ui.label(
                 f"Phone number: +{record['country']:.0f} {record['phone']:,.0f}".replace(
                     ",", " "
                 )
             ).classes("text-h5")
-            ui.label(f"Country: {' '.join(phones.where(record['country']))}").classes(
-                "text-h5"
-            )
+            nicegui.ui.label(
+                f"Country: {' '.join(phones.where(record['country']))}"
+            ).classes("text-h5")
 
-            with ui.row():
-                ui.button("Edit Profile")
-                ui.button("Log Out").on_click(logout).props(f"color=red")
+            with nicegui.ui.row():
+                nicegui.ui.button("Edit Profile")
+                nicegui.ui.button("Log Out").on_click(utils.logout).props(f"color=red")
 
-        with ui.card().classes(
+        with nicegui.ui.card().classes(
             "box"
             if (
-                cc_off := not database.hasCell(
+                cc_off := not utils.database.hasCell(
                     "Payment Methods", "username", record["username"]
                 )
             )
             else "info"
         ):
-            with ui.grid(columns=1 if cc_off else 2):
+            with nicegui.ui.grid(columns=1 if cc_off else 2):
                 if not cc_off:
-                    with ui.column().classes("items-center"):
-                        cc_record = database.getRow(
+                    with nicegui.ui.column().classes("items-center"):
+                        cc_record = utils.database.getRow(
                             "Payment Methods", "username", record["username"]
                         )[1]
 
-                        for cc_field in database.getTable("Payment Methods").columns:  # type: ignore
+                        for cc_field in utils.database.getTable("Payment Methods").columns:  # type: ignore
                             if cc_field != "username":
-                                ui.label(
+                                nicegui.ui.label(
                                     f"{cc_field}: {cc_record[cc_field][0]}"
                                 ).classes("text-h5")
 
-                with ui.column().classes("items-center"):
-                    section(f"{'Add' if cc_off else 'Change'} Payment Method")
-                    with ui.dialog() as pay_dialog, ui.card().classes("items-center"):
-                        section("Enter your payment details")
+                with nicegui.ui.column().classes("items-center"):
+                    utils.section(f"{'Add' if cc_off else 'Change'} Payment Method")
+                    with nicegui.ui.dialog() as pay_dialog, nicegui.ui.card().classes(
+                        "items-center"
+                    ):
+                        utils.section("Enter your payment details")
 
-                        with ui.grid(columns=2):
-                            with ui.element("div").classes("p-2 bg-orange-100"):
-                                formlabel("Card Number: ")
-                            with ui.element("div").classes("p-2 bg-blue-100"):
-                                ui.number(placeholder=randCC()).props(
-                                    "rounded outlined dense"
-                                )
+                        with nicegui.ui.grid(columns=2):
+                            with nicegui.ui.element("div").classes("p-2 bg-orange-100"):
+                                join.formlabel("Card Number: ")
+                            with nicegui.ui.element("div").classes("p-2 bg-blue-100"):
+                                nicegui.ui.number(
+                                    placeholder=utils.randCC(), min=1e15, max=1e20
+                                ).props("rounded outlined dense")
 
-                            with ui.element("div").classes("p-2 bg-orange-100"):
-                                formlabel("Card Holder Name: ")
-                            with ui.element("div").classes("p-2 bg-blue-100"):
-                                ui.input(placeholder=randFullName()).props(
-                                    "rounded outlined dense"
-                                )
+                            with nicegui.ui.element("div").classes("p-2 bg-orange-100"):
+                                join.formlabel("Card Holder Name: ")
+                            with nicegui.ui.element("div").classes("p-2 bg-blue-100"):
+                                nicegui.ui.input(
+                                    placeholder=utils.randFullName(),
+                                    validation=lambda value: (
+                                        "Only letters in your name please"
+                                        if not value.replace(" ", "").isalpha()
+                                        else None
+                                    ),
+                                ).props("rounded outlined dense")
 
-                            with ui.element("div").classes("p-2 bg-orange-100"):
-                                formlabel("Security Code: ")
-                            with ui.element("div").classes("p-2 bg-blue-100"):
-                                ui.number(placeholder=randrange(100, 999)).props("rounded outlined dense")  # type: ignore
+                            with nicegui.ui.element("div").classes("p-2 bg-orange-100"):
+                                join.formlabel("Security Code: ")
+                            with nicegui.ui.element("div").classes("p-2 bg-blue-100"):
+                                nicegui.ui.number(placeholder=random.randrange(100, 999), min=100, max=999).props("rounded outlined dense")  # type: ignore
 
-                            with ui.element("div").classes("p-2 bg-orange-100"):
-                                formlabel("Expiry Date: ")
-                            with ui.element("div").classes("p-2 bg-blue-100"):
-                                with ui.row().classes("no-wrap"):
-                                    ui.number(placeholder="MM").props(
-                                        "rounded outlined dense"
-                                    )
-                                    ui.label("/")
-                                    ui.number(placeholder="YYYY").props(
-                                        "rounded outlined dense"
-                                    )
+                            with nicegui.ui.element("div").classes("p-2 bg-orange-100"):
+                                join.formlabel("Expiry Date: ")
+                            with nicegui.ui.element("div").classes("p-2 bg-blue-100"):
+                                with nicegui.ui.row().classes("no-wrap"):
+                                    nicegui.ui.number(
+                                        placeholder="MM", min=1, max=12
+                                    ).props("rounded outlined dense")
+                                    nicegui.ui.label("/")
+                                    nicegui.ui.number(
+                                        placeholder="YYYY",
+                                        min=datetime.datetime.now().year,
+                                    ).props("rounded outlined dense")
 
                         def pay_submit(e):
-                            database.addRow(
+                            utils.database.addRow(
                                 "Payment Methods",
                                 record["username"],
                                 *[
                                     x.value
                                     for x in pay_dialog.descendants()
-                                    if isinstance(x, fieldType)
+                                    if isinstance(x, utils.fieldType)
                                 ],
                             )
                             pay_dialog.close()
-                            ui.notify("Payment method added successfully!")
+                            nicegui.ui.notify("Payment method added successfully!")
                             time.sleep(0.5)
-                            ui.navigate.to("/app/users")
+                            nicegui.ui.navigate.to("/app/users")
 
-                        with ui.row():
-                            ui.button(icon="check", on_click=pay_submit).props(
+                        with nicegui.ui.row():
+                            nicegui.ui.button(icon="check", on_click=pay_submit).props(
                                 "fab color=green"
                             )
-                            ui.button(icon="close", on_click=pay_dialog.close).props(
-                                "fab color=red"
-                            )
+                            nicegui.ui.button(
+                                icon="close", on_click=pay_dialog.close
+                            ).props("fab color=red")
 
-                    ui.button(icon="wallet", on_click=pay_dialog.open).props(
+                    nicegui.ui.button(icon="wallet", on_click=pay_dialog.open).props(
                         "fab color=accent"
                     )
 
                     if not cc_off:
 
                         def remove_cc(_):
-                            database.delRow(
+                            utils.database.delRow(
                                 "Payment Methods", "username", record["username"]
                             )
-                            ui.navigate.to("/app/users")
+                            nicegui.ui.navigate.to("/app/users")
 
-                        section("Remove Payment Method")
-                        ui.button(icon="delete", on_click=remove_cc).props(
+                        utils.section("Remove Payment Method")
+                        nicegui.ui.button(icon="delete", on_click=remove_cc).props(
                             "fab color=orange"
                         )

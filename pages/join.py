@@ -1,3 +1,5 @@
+from datetime import datetime
+import env
 from nicegui import ElementFilter, ui
 from functools import partial
 from utils import (
@@ -11,6 +13,7 @@ from utils import (
     database,
     dateCheck,
     unique,
+    fieldType,
 )
 import uuid
 from itertools import chain
@@ -53,24 +56,6 @@ def phone():
 
     with ui.grid(columns=2):
         with ui.element("div").classes("p-2 bg-orange-100"):
-            formlabel("Phone Number: ")
-        with ui.element("div").classes("p-2 bg-blue-100"):
-            ui.number(placeholder="Without country code").props(
-                "rounded outlined dense"
-            )
-
-        with ui.element("div").classes("p-2 bg-orange-100"):
-            formlabel("Country Code: ")
-        with ui.element("div").classes("p-2 bg-blue-100"):
-            with ui.row():
-                formlabel("+", color=0x222)
-                ui.number(
-                    placeholder="91",
-                    on_change=lambda e: result.set_text(phones.where(f"+{e.value}")[0]),
-                ).props("rounded outlined dense").style("width: 60%;")
-                result = ui.label()
-
-        with ui.element("div").classes("p-2 bg-orange-100"):
             formlabel("Username: ")
         with ui.element("div").classes("p-2 bg-blue-100"):
             ui.input(value=username.generate_uname(f"{uuid.uuid4()}", 2)).props(
@@ -107,10 +92,28 @@ def phone():
                         "cursor-pointer"
                     )
 
-    fields = list(chain(*[ElementFilter(kind=k) for k in [ui.input, ui.number]]))
+        with ui.element("div").classes("p-2 bg-orange-100"):
+            formlabel("Phone Number: ")
+        with ui.element("div").classes("p-2 bg-blue-100"):
+            ui.number(placeholder="Without country code").props(
+                "rounded outlined dense"
+            )
+
+        with ui.element("div").classes("p-2 bg-orange-100"):
+            formlabel("Country Code: ")
+        with ui.element("div").classes("p-2 bg-blue-100"):
+            with ui.row():
+                formlabel("+", color=0x222)
+                ui.number(
+                    placeholder="91",
+                    on_change=lambda e: result.set_text(phones.where(f"+{e.value}")[0]),
+                ).props("rounded outlined dense").style("width: 60%;")
+                result = ui.label()
+
+    fields = list(ElementFilter(kind=fieldType))  # type: ignore
 
     def formValidCheck(_):
-        form.valid = pword_cfm.value == pword.value and (False not in [field.value not in [None, ""] for field in fields]) and dateCheck(date.value)  # type: ignore
+        form.valid = pword_cfm.value == pword.value and (False not in [field.value not in [None, ""] for field in fields]) and dateCheck(date.value, allow_yrs=range(datetime.now().year - 100, datetime.now().year - env.MIN_AGE))  # type: ignore
 
     [field.on("change", formValidCheck) for field in fields]
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3.11
 
 # type: ignore
-from nicegui import ui, app
-from functools import partial
-import uuid, importlib, env, asyncio
-from utils import header, find, styles, section
+import nicegui
+import functools
+import uuid, importlib, env
+import utils
 
 # This file is the main homepage of the app
 
@@ -15,11 +15,11 @@ def pages():
     return (
         [
             about,
-            ("request", "shopping_cart", "Order Delivery"),
-            ("new", "flight_takeoff", "I'm Flying"),
+            ("request", "shopping_cart", "Request Delivery"),
+            ("flyer", "flight_takeoff", "I'm Flying"),
             ("users", "badge", "Profile"),
         ]
-        if "logIn" in app.storage.user
+        if "logIn" in nicegui.app.storage.user
         else [
             about,
             ("join", "person_add", "Create Account"),
@@ -29,28 +29,28 @@ def pages():
 
 
 # Here are the functions that get called when navigating to different pages in our website
-@ui.page("/")
+@nicegui.ui.page("/")
 def main():
-    header(env.APP_NAME)
-    styles("main")
+    utils.header(env.APP_NAME)
+    utils.styles("main")
 
     # This uses our list to populate a row of buttons for navigating to the pages
-    with ui.row():
+    with nicegui.ui.row():
         for name, icon, desc in pages():
-            with ui.card().classes("box"):
-                ui.button(icon=icon).props("outline round").classes(
+            with nicegui.ui.card().classes("box"):
+                nicegui.ui.button(icon=icon).props("outline round").classes(
                     "shadow-lg"
-                ).on_click(partial(ui.navigate.to, f"/app/{name}"))
-                section(desc)
+                ).on_click(functools.partial(nicegui.ui.navigate.to, f"/app/{name}"))
+                utils.section(desc)
 
 
 # This allows pages to be created as long as
 #   1. They are included in the pages list in this file
 #   2. There is a <page-name>.py file in the pages folder that has a show method to display its contents
-@ui.page("/app/{page}")
+@nicegui.ui.page("/app/{page}")
 def App(page: str):
-    header(find(pages(), page, 2))
-    styles("main")
+    utils.header(utils.find(pages(), page, 2))
+    utils.styles("main")
 
     body = importlib.import_module(f"pages.{page}")
     body.show()
@@ -65,7 +65,7 @@ def App(page: str):
 # app.on_startup(monitor)
 
 # This makes the web app visible at localhost:8080
-ui.run(
+nicegui.ui.run(
     on_air=env.secret("onair token"),
     storage_secret=f"{uuid.uuid4()}",
     favicon="💼",
