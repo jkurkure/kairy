@@ -68,7 +68,9 @@ def styles(path):
 
 
 def section(text, color=0x6E93D6, size=200):
-    return ui.label(text).style(f"color: #{color:x}; font-size: {size}%; font-weight: 300")
+    return ui.label(text).style(
+        f"color: #{color:x}; font-size: {size}%; font-weight: 300"
+    )
 
 
 def dateCheck(date, allow_yrs=None):

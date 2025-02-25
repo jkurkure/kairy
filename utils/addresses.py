@@ -48,7 +48,7 @@ def lookFor(name):
             return (None, None)
     except:
         return (None, None)
-    
+
 
 def justCountry(address):
     return address.split(", ")[-1]
