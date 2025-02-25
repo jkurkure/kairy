@@ -3,16 +3,20 @@ import string
 import sys
 import pickle
 
+
 # Load tokens only when needed
 def load_tokens():
     return pickle.load(open("resources/data/tokens.pkl", "rb"))
+
 
 # Common hashing functions
 def simple_hasher(s):
     return sum([ord(c) for c in s])
 
+
 def easy_hasher(s):
     return eval("*".join([str(ord(c)) for c in s]))
+
 
 # Secret key for username generation
 SECRET_KEY = """

@@ -2,16 +2,18 @@ import string
 import sys
 from utils.common import simple_hasher
 
+
 def generate_password(input_string, length):
     # Import random here to avoid circular imports
     import random
-    
+
     # Set a fixed seed value
     random.seed(simple_hasher(input_string))
-    
+
     characters = string.ascii_letters + string.digits + string.punctuation
     password = "".join(random.choice(characters) for _ in range(length))
     return password
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
