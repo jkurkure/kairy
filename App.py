@@ -5,6 +5,7 @@ import nicegui
 import functools
 import uuid, importlib, env
 import utils
+import sys
 
 # This file is the main homepage of the app
 
@@ -55,29 +56,46 @@ def load_subpage(page_path, page_name, pages_list=None):
     body.show()
 
 
-# Here are the functions that get called when navigating to different pages in our website
-@nicegui.ui.page("/")
-def main():
-    utils.header(env.APP_NAME)
-    utils.styles("main")
+if __name__ in {"__main__", "__mp_main__"}:
+    # Here are the functions that get called when navigating to different pages in our website
+    @nicegui.ui.page("/")
+    def main():
+        utils.header(env.APP_NAME)
+        utils.styles("main")
 
-    # This uses our list to populate a row of buttons for navigating to the pages
-    create_navigation_buttons(get_main_pages())
-
-
-# This allows pages to be created as long as
-#   1. They are included in the pages list in this file
-#   2. There is a <page-name>.py file in the pages folder that has a show method to display its contents
-@nicegui.ui.page("/app/{page}")
-def App(page: str):
-    load_subpage(page, page, get_main_pages())
+        # This uses our list to populate a row of buttons for navigating to the pages
+        create_navigation_buttons(get_main_pages())
 
 
-# This makes the web app visible at localhost:8080
-nicegui.ui.run(
-    on_air=env.secret("onair token"),
-    storage_secret=f"{uuid.uuid4()}",
-    favicon="💼",
-    show=False,
-    port=8081,
-)
+    # This allows pages to be created as long as
+    #   1. They are included in the pages list in this file
+    #   2. There is a <page-name>.py file in the pages folder that has a show method to display its contents
+    @nicegui.ui.page("/app/{page}")
+    def App(page: str):
+        load_subpage(page, page, get_main_pages())
+
+
+    # This adds the messenger page to the website
+    importlib.import_module("pages.message")
+
+
+    # This makes the web app visible at localhost:8080
+    nicegui.ui.run(
+        on_air=env.secret("onair token"),
+        storage_secret=f"{uuid.uuid4()}",
+        favicon="💼",
+        show=False,
+        port=8081,
+    )
+
+
+    # Only enable in debug mode
+    if '--debug' in sys.argv:
+        import asyncio
+
+        def debug():
+            loop = asyncio.get_running_loop()
+            loop.set_debug(True)
+            loop.slow_callback_duration = 0.05
+
+        nicegui.app.on_startup(debug)
