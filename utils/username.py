@@ -1,29 +1,18 @@
-import random, sys, pickle
-
-tokens = pickle.load(open("resources/data/tokens.pkl", "rb"))
-
-SECRET_KEY = """
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed odio morbi quis commodo odio aenean sed. Malesuada pellentesque elit eget gravida cum. Ut lectus arcu bibendum at varius vel pharetra vel turpis. Tempus imperdiet nulla malesuada pellentesque elit eget. Massa enim nec dui nunc mattis enim. Nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum. Sed nisi lacus sed viverra. Nibh sit amet commodo nulla facilisi nullam vehicula. Augue lacus viverra vitae congue. Mi proin sed libero enim. Senectus et netus et malesuada fames ac turpis egestas integer.
-"""
-
-# Replace the above with your own string of similar length on your local
-# copy to further perplex brute-force attempts.
-
-
-def simple_hasher(s):
-    return sum([ord(c) for c in s])
-
-
-def easy_hasher(s):
-    return eval("*".join([str(ord(c)) for c in s]))
+import sys
+from utils.common import simple_hasher, easy_hasher, SECRET_KEY, load_tokens
 
 
 def generate_uname(input_string, length):
+    # Import random here to avoid circular imports
+    import random
+
+    # Set a fixed seed value
     random.seed(
         simple_hasher(SECRET_KEY) * simple_hasher(input_string)
         + easy_hasher(input_string)
-    )  # Set a fixed seed value
+    )
 
+    tokens = load_tokens()
     uname = []
 
     for _ in range(length):
@@ -33,4 +22,12 @@ def generate_uname(input_string, length):
 
 
 if __name__ == "__main__":
-    print(generate_uname(sys.argv[1], int(sys.argv[2])))
+    if len(sys.argv) < 3:
+        print("Usage: python username.py <input_string> <length>")
+        sys.exit(1)
+
+    input_string = sys.argv[1]
+    length = int(sys.argv[2])
+    username = generate_uname(input_string, length)
+    print(f"Input string: {input_string}")
+    print(f"Generated username: {username}")

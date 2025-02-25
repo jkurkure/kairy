@@ -1,30 +1,27 @@
-import functools
-import importlib
 from nicegui import ui
+import importlib
 
 from utils import section
 import utils
+import sys
 
-pages = [
+# Import the shared navigation functions from App.py
+sys.path.append(".")  # Ensure we can import from the root directory
+from App import create_navigation_buttons, load_subpage
+
+# Define the flyer subpages
+flyer_pages = [
     ("view_items", "list", "View Items"),
     ("add_flight", "flight", "Add Upcoming Flight"),
 ]
 
 
 def show():
-    with ui.grid(columns=2):
-        for name, icon, desc in pages:
-            with ui.card().classes("box"):
-                ui.button(icon=icon).props("outline round").classes(
-                    "shadow-lg"
-                ).on_click(functools.partial(ui.navigate.to, f"/app/flyer/{name}"))
-                section(desc)
+    # Use the shared navigation function with a custom base path
+    create_navigation_buttons(flyer_pages, base_path="/app/flyer")
 
 
 @ui.page("/app/flyer/{subpage}")
 def App(subpage: str):
-    utils.header(utils.find(pages, subpage, 2))
-    utils.styles("main")
-
-    body = importlib.import_module(f"pages.flyersub.{subpage}")
-    body.show()
+    # Use the shared subpage loading function with a custom path
+    load_subpage(f"flyersub.{subpage}", subpage, flyer_pages)

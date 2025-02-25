@@ -1,10 +1,15 @@
-import random
 import string
 import sys
+from utils.common import simple_hasher
 
 
 def generate_password(input_string, length):
-    random.seed(sum([ord(c) for c in input_string]))  # Set a fixed seed value
+    # Import random here to avoid circular imports
+    import random
+
+    # Set a fixed seed value
+    random.seed(simple_hasher(input_string))
+
     characters = string.ascii_letters + string.digits + string.punctuation
     password = "".join(random.choice(characters) for _ in range(length))
     return password
@@ -12,7 +17,7 @@ def generate_password(input_string, length):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python pword-hash.py <input_string>")
+        print("Usage: python password.py <input_string>")
         sys.exit(1)
 
     input_string = sys.argv[1]

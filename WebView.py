@@ -30,6 +30,7 @@ function openWindow() {
 }
 </script>
 """
+ui.page_title(env.APP_NAME)
 # Add javascript to page
 ui.add_head_html(js_content)
 # Render custom html into page
