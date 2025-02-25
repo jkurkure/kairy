@@ -19,7 +19,7 @@ from utils.forms import (
     create_date_input,
     get_form_fields,
     setup_validation,
-    create_form_row
+    create_form_row,
 )
 
 registerTypes = [("Phone Number", "phone"), ("Google Accounts", "google")]
@@ -63,32 +63,32 @@ def phone():
         create_form_row(
             "Username: ",
             ui.input,
-            {'value':username.generate_uname(f"{uuid.uuid4()}", 2)}
+            {"value": username.generate_uname(f"{uuid.uuid4()}", 2)},
         )
 
         pword = create_form_row(
             "Password: ",
             ui.input,
-            {'password_toggle_button':True,
-            'value':password.generate_password(f"{uuid.uuid4()}", 14)}
+            {
+                "password_toggle_button": True,
+                "value": password.generate_password(f"{uuid.uuid4()}", 14),
+            },
         )
 
         pword_cfm = create_form_row(
             "Confirm Password: ",
             ui.input,
-            {'password':True, 'password_toggle_button':True}
+            {"password": True, "password_toggle_button": True},
         )
 
         date = create_form_row(
             "Date of Birth",
             create_date_input,
-            {'on_change_callback':lambda e: formValidCheck(e)}
+            {"on_change_callback": lambda e: formValidCheck(e)},
         )
 
         create_form_row(
-            "Phone Number: ",
-            ui.number, 
-            {'placeholder':"Without country code"}
+            "Phone Number: ", ui.number, {"placeholder": "Without country code"}
         )
 
         with ui.element("div").classes("p-2 bg-orange-100"):
@@ -107,7 +107,9 @@ def phone():
     def custom_validation():
         return pword_cfm.value == pword.value
 
-    formValidCheck = setup_validation(form, fields, date, {'min_age': env.MIN_AGE}, custom_validation)
+    formValidCheck = setup_validation(
+        form, fields, date, {"min_age": env.MIN_AGE}, custom_validation
+    )
 
     def createAccount(e):
         if form.valid:
