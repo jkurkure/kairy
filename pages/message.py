@@ -2,7 +2,6 @@ from functools import partial
 from nicegui import ui, app
 
 from utils import header
-from utils.common import easy_hasher
 from utils.database import getTable
 
 
