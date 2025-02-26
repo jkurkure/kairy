@@ -2,6 +2,7 @@ import functools
 from nicegui import ui
 from utils import funcChain
 
+
 def order_success_dialog():
     with ui.dialog() as dialog:
         with ui.card():
@@ -17,6 +18,7 @@ def order_success_dialog():
             ).props("fab color=green")
 
     return dialog
+
 
 def severe_error_dialog():
     with ui.dialog() as dialog:
