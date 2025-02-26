@@ -2,7 +2,7 @@ from nicegui import ui
 import utils
 from utils.addresses import justCountry
 
-
+@utils.logInOnly
 def show():
     uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][
         "username"

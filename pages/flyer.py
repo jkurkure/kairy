@@ -1,7 +1,4 @@
 from nicegui import ui
-import importlib
-
-from utils import section
 import utils
 import sys
 
@@ -16,6 +13,7 @@ flyer_pages = [
 ]
 
 
+@utils.logInOnly
 def show():
     # Use the shared navigation function with a custom base path
     create_navigation_buttons(flyer_pages, base_path="/app/flyer")
