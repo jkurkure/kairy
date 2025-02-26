@@ -1,5 +1,6 @@
 import pickle
 
+
 # Load tokens only when needed
 def load_tokens():
     return pickle.load(open("resources/data/tokens.pkl", "rb"))
