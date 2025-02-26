@@ -34,9 +34,7 @@ def get_main_pages():
             dialogs.severe_error_dialog().open()
             user = None
         else:
-            user = users.iloc[nicegui.app.storage.user["logIn"]][
-                "username"
-            ]
+            user = users.iloc[nicegui.app.storage.user["logIn"]]["username"]
         if any(
             user in conv for conv in nicegui.app.storage.general.get("messages", {})
         ):
