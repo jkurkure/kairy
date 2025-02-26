@@ -1,7 +1,7 @@
 from functools import partial
 from nicegui import ui, app
 
-from utils import header
+from utils import header, logInOnly
 from utils.database import getTable
 
 
@@ -26,38 +26,35 @@ def chat_messages(own_id, other):
 
 
 @ui.page("/msg/{other}")
+@logInOnly
 def index(other: str):
-    if "logIn" not in app.storage.user:
-        ui.navigate.to("/app/users")
+    header(f"Messaging {other}")
 
+    def send(other):
+        messages(user, other).append((user, avatar, text.value))
+        chat_messages.refresh()
+        text.value = ""
+
+    user = getTable("Users").iloc[app.storage.user["logIn"]]["username"]
+
+    if (
+        "profile-pics" in app.storage.general
+        and user in app.storage.general["profile-pics"]
+    ):
+        avatar = app.storage.general["profile-pics"][user]
     else:
-        header(f"Messaging {other}")
+        avatar = f"https://robohash.org/{user}?bgset=bg2"
 
-        def send(other):
-            messages(user, other).append((user, avatar, text.value))
-            chat_messages.refresh()
-            text.value = ""
+    with ui.column().classes("w-full items-stretch"):
+        chat_messages(user, other)
 
-        user = getTable("Users").iloc[app.storage.user["logIn"]]["username"]
-
-        if (
-            "profile-pics" in app.storage.general
-            and user in app.storage.general["profile-pics"]
-        ):
-            avatar = app.storage.general["profile-pics"][user]
-        else:
-            avatar = f"https://robohash.org/{user}?bgset=bg2"
-
-        with ui.column().classes("w-full items-stretch"):
-            chat_messages(user, other)
-
-        with ui.footer().classes("bg-white"):
-            with ui.row().classes("w-full items-center"):
-                with ui.avatar():
-                    ui.image(avatar)
-                text = (
-                    ui.input(placeholder="message")
-                    .props("rounded outlined")
-                    .classes("flex-grow")
-                    .on("keydown.enter", partial(send, other))
-                )
+    with ui.footer().classes("bg-white"):
+        with ui.row().classes("w-full items-center"):
+            with ui.avatar():
+                ui.image(avatar)
+            text = (
+                ui.input(placeholder="message")
+                .props("rounded outlined")
+                .classes("flex-grow")
+                .on("keydown.enter", partial(send, other))
+            )

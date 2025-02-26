@@ -1,3 +1,4 @@
+import functools
 import pickle
 from nicegui import ui, app
 import re, rstr, random
@@ -94,3 +95,13 @@ def randFullName():
 
 def funcChain(*fs):
     return lambda: [f() for f in fs]
+
+
+def logInOnly(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if "logIn" not in app.storage.user:
+            ui.navigate.to("/app/users")
+        else:
+            return func(*args, **kwargs)
+    return wrapper
