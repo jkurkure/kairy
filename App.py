@@ -1,11 +1,12 @@
 #!/usr/bin/env python3.11
 
-# type: ignore
 import nicegui
 import functools
 import uuid, importlib, env
 import utils
 import sys
+
+from utils import dialogs
 
 # This file is the main homepage of the app
 
@@ -29,9 +30,13 @@ def get_main_pages():
     )
 
     if "logIn" in nicegui.app.storage.user:
-        user = utils.database.getTable("Users").iloc[nicegui.app.storage.user["logIn"]][
-            "username"
-        ]
+        if (users := utils.database.getTable("Users")) is None:
+            dialogs.severe_error_dialog().open()
+            user = None
+        else:
+            user = users.iloc[nicegui.app.storage.user["logIn"]][
+                "username"
+            ]
         if any(
             user in conv for conv in nicegui.app.storage.general.get("messages", {})
         ):
