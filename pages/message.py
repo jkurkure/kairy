@@ -28,7 +28,7 @@ def chat_messages(own_id, other):
 def index(other: str):
     header(f"Messaging {other}")
 
-    if not (users := getTable('Users')):
+    if (users := getTable('Users')) is None:
         severe_error_dialog().open()
         user = None
     else:
