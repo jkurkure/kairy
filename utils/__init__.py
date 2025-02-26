@@ -104,4 +104,5 @@ def logInOnly(func):
             ui.navigate.to("/app/users")
         else:
             return func(*args, **kwargs)
+
     return wrapper

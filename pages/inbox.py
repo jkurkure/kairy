@@ -8,7 +8,9 @@ def show():
     utils.header("Inbox")
     utils.styles("main")
 
-    user = utils.database.getTable("Users").iloc[nicegui.app.storage.user["logIn"]]["username"]
+    user = utils.database.getTable("Users").iloc[nicegui.app.storage.user["logIn"]][
+        "username"
+    ]
     messages = nicegui.app.storage.general.get("messages", {})
 
     convs = utils.unique([conv for conv in messages])
@@ -21,6 +23,6 @@ def show():
                 other_user = conv.replace("with", "").replace(user, "")
             with nicegui.ui.card().classes("box"):
                 nicegui.ui.label(f"Conversation with {other_user}")
-                nicegui.ui.button(icon='open_in_new').props("outline round").on_click(
+                nicegui.ui.button(icon="open_in_new").props("outline round").on_click(
                     functools.partial(nicegui.ui.navigate.to, f"/msg/{other_user}")
                 )
