@@ -13,22 +13,30 @@ import sys
 # This sets the pages to be accessible from the home-page, depending on whether the user is logged in
 def get_main_pages():
     about = ("about", "help", f"About {env.APP_NAME}")
-    pages = [
-        about,
-        ("request", "shopping_cart", "Request Delivery"),
-        ("flyer", "flight_takeoff", "I'm Flying"),
-        ("users", "badge", "Profile"),
-    ] if "logIn" in nicegui.app.storage.user else [
-        about,
-        ("join", "person_add", "Create Account"),
-        ("users", "diversity_3", "Log In"),
-    ]
-    
+    pages = (
+        [
+            about,
+            ("request", "shopping_cart", "Request Delivery"),
+            ("flyer", "flight_takeoff", "I'm Flying"),
+            ("users", "badge", "Profile"),
+        ]
+        if "logIn" in nicegui.app.storage.user
+        else [
+            about,
+            ("join", "person_add", "Create Account"),
+            ("users", "diversity_3", "Log In"),
+        ]
+    )
+
     if "logIn" in nicegui.app.storage.user:
-        user = utils.database.getTable("Users").iloc[nicegui.app.storage.user["logIn"]]["username"]
-        if any(user in conv for conv in nicegui.app.storage.general.get("messages", {})):
+        user = utils.database.getTable("Users").iloc[nicegui.app.storage.user["logIn"]][
+            "username"
+        ]
+        if any(
+            user in conv for conv in nicegui.app.storage.general.get("messages", {})
+        ):
             pages.insert(1, ("inbox", "chat", "Messages"))
-    
+
     return pages
 
 
@@ -96,6 +104,5 @@ if __name__ in {"__main__", "__mp_main__"}:
             loop = asyncio.get_running_loop()
             loop.set_debug(True)
             loop.slow_callback_duration = 0.05
-
 
         nicegui.app.on_startup(debug)

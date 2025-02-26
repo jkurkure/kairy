@@ -22,6 +22,7 @@ if database.getTable("Items") is None:
         "Items", "id", "requester", "name", "from", "to", "date", "price", "image"
     )
 
+
 @logInOnly
 def show():
     photo = ""
