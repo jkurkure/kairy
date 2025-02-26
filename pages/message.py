@@ -7,7 +7,7 @@ from utils.dialogs import severe_error_dialog
 
 
 def messages(user, other):
-    if user >= other:
+    if user > other:
         conv = f"{other}with{user}"
     else:
         conv = f"{user}with{other}"
