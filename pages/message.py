@@ -3,7 +3,7 @@ from nicegui import ui, app
 
 from utils import header, logInOnly
 from utils.database import getTable
-
+from utils.dialogs import severe_error_dialog
 
 def messages(user, other):
     if user >= other:
@@ -18,24 +18,26 @@ def messages(user, other):
 
     return app.storage.general["messages"][conv]
 
-
 @ui.refreshable
 def chat_messages(own_id, other):
     for user_id, avatar, text in messages(own_id, other):
         ui.chat_message(avatar=avatar, text=text, sent=user_id == own_id)
-
 
 @ui.page("/msg/{other}")
 @logInOnly
 def index(other: str):
     header(f"Messaging {other}")
 
+    if not (users := getTable('Users')):
+        severe_error_dialog().open()
+        user = None
+    else:
+        user = users.iloc[app.storage.user["logIn"]]["username"]
+
     def send(other):
         messages(user, other).append((user, avatar, text.value))
         chat_messages.refresh()
         text.value = ""
-
-    user = getTable("Users").iloc[app.storage.user["logIn"]]["username"]
 
     if (
         "profile-pics" in app.storage.general

@@ -2,8 +2,7 @@ import functools
 from nicegui import ui
 from utils import funcChain
 
-
-def order_success_dialog(action):
+def order_success_dialog():
     with ui.dialog() as dialog:
         with ui.card():
             ui.label("Success!").classes("text-h4")
@@ -16,5 +15,21 @@ def order_success_dialog(action):
                     functools.partial(ui.navigate.to, "/app/users"), dialog.close
                 ),
             ).props("fab color=green")
+
+    return dialog
+
+def severe_error_dialog():
+    with ui.dialog() as dialog:
+        with ui.card():
+            ui.label("Error!").classes("text-h4")
+            ui.label(
+                "A severe error has occurred. Please try again later or contact support."
+            )
+            ui.button(
+                "Close",
+                on_click=funcChain(
+                    functools.partial(ui.navigate.to, "/"), dialog.close
+                ),
+            ).props("fab color=red")
 
     return dialog
