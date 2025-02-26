@@ -23,6 +23,7 @@ else:
     open(file_path, "x")
     saveDB()
 
+
 def newTable(name, *columns):
     if name not in MainDatabase:
         MainDatabase[name] = pd.DataFrame(columns=columns)
