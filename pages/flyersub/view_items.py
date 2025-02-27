@@ -9,9 +9,7 @@ async def add_item(item):
 
         utils.section(item["name"]).classes("justify-center")
 
-        ui.label(f"From: {justCountry(item['from'])}").classes(
-            "justify-center"
-        )
+        ui.label(f"From: {justCountry(item['from'])}").classes("justify-center")
         ui.label(f"To: {justCountry(item['to'])}").classes("justify-center")
 
         ui.label(f"Date: {item['date']}")
@@ -29,7 +27,8 @@ async def add_item(item):
                 lambda _, item_id=item["id"]: ui.notify(
                     f"Offer to deliver item {item_id}"
                 )
-                        )
+            )
+
 
 async def create_list():
     uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][  # type: ignore
