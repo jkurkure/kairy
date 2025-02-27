@@ -25,8 +25,8 @@ def show():
 
                     ui.label(f"Date: {item['date']}")
                     ui.label(f"Price: SG ${item['price']}")
-                    if item["image"]:
-                        ui.image(item["image"]).style("max-height: 200px")
+                    # if item["image"]:
+                    #     ui.image(item["image"]).style("max-height: 200px")
 
                     with ui.row().classes("justify-end"):
                         ui.button(icon="message").props("fab mini").on_click(
@@ -56,7 +56,7 @@ def show():
         ).on_value_change(lambda e: showPage(e.value - 1))
         body = ui.element("div")
 
-        showPage(3)
+        showPage(0)
 
     else:
         ui.label("Nobody's ordered anything yet!").style("font-size: 150%")
