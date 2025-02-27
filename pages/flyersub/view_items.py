@@ -10,7 +10,7 @@ def show():
         body.clear()
 
         with body:
-            for item in filteredItems[start:start + 5]:  # type: ignore
+            for item in filteredItems[start : start + 5]:  # type: ignore
                 print(item)
                 with ui.card().classes("box"):
                     ui.label(f"👤 {item['requester']}").style("font-size: 75%")
