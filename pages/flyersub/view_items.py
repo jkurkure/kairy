@@ -49,7 +49,7 @@ async def create_list():
 
 @utils.logInOnly
 async def show():
-    await ui.context.client.connected()
     standby = ui.spinner("dots", size="lg", color="orange")
+    await ui.context.client.connected()
     await create_list()
     standby.delete()
