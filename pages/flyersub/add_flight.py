@@ -2,5 +2,5 @@ import utils
 
 
 @utils.logInOnly
-def show():
+async def show():
     pass

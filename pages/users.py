@@ -34,7 +34,7 @@ def setProfilePic(e):
     nicegui.ui.navigate.to("/app/users")
 
 
-def show():
+async def show():
     if utils.database.getTable("Users") is None:
         env.maintenance()
 

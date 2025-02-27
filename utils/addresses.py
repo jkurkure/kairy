@@ -1,3 +1,4 @@
+import time
 from geopy.geocoders import Nominatim
 import uuid
 
@@ -9,15 +10,20 @@ def geolocator():
 center_memo = {}
 
 
-def getCenter(country):
+async def getCenter(country):
     if country in center_memo:
         return center_memo[country]
-    location = geolocator().geocode(country)
-    if location:
-        center_memo[country] = (location.latitude, location.longitude)  # type: ignore
-        return center_memo[country]
-    else:
-        return None
+
+    try:
+        location = geolocator().geocode(country)
+        if location:
+            center_memo[country] = (location.latitude, location.longitude)  # type: ignore
+            return center_memo[country]
+        else:
+            return None
+    except:
+        time.sleep(2)
+        return getCenter(country)
 
 
 name_memo = {}
@@ -35,7 +41,7 @@ def getName(lat, lng):
 lookfor_memo = {}
 
 
-def lookFor(name):
+async def lookFor(name):
     if name in lookfor_memo:
         return lookfor_memo[name]
 
@@ -47,7 +53,8 @@ def lookFor(name):
         else:
             return (None, None)
     except:
-        return (None, None)
+        time.sleep(2)
+        return lookFor(name)
 
 
 def justCountry(address):

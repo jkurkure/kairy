@@ -1,7 +1,7 @@
 from nicegui import ui
 import utils
 from utils.addresses import justCountry
-import itertools
+
 
 
 @utils.logInOnly
@@ -53,6 +53,7 @@ def show():
         )
         body = ui.element("div")
         showPage(0)
+
 
     else:
         ui.label("Nobody's ordered anything yet!").style("font-size: 150%")
