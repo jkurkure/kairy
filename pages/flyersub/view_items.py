@@ -5,13 +5,14 @@ from utils.addresses import justCountry
 
 ITEMS_PER_PAGE = 5
 
+
 @utils.logInOnly
 def show():
     uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][
         "username"
     ]
 
-    with ui.element('div') as container:
+    with ui.element("div") as container:
 
         items = utils.database.getTable("Items")
         if items is not None and not items.empty:
@@ -39,7 +40,9 @@ def show():
                             ui.label(f"From: {justCountry(item['from'])}").classes(
                                 "justify-center"
                             )
-                            ui.label(f"To: {justCountry(item['to'])}").classes("justify-center")
+                            ui.label(f"To: {justCountry(item['to'])}").classes(
+                                "justify-center"
+                            )
 
                             ui.label(f"Date: {item['date']}")
                             ui.label(f"Price: SG ${item['price']}")
@@ -48,9 +51,9 @@ def show():
 
                             with ui.row().classes("justify-end"):
                                 ui.button(icon="message").props("fab mini").on_click(
-                                    lambda _, requester=item["requester"]: ui.navigate.to(
-                                        f"/msg/{requester}"
-                                    )
+                                    lambda _, requester=item[
+                                        "requester"
+                                    ]: ui.navigate.to(f"/msg/{requester}")
                                 )
                                 ui.button(icon="check").props("fab mini").on_click(
                                     lambda _, item_id=item["id"]: ui.notify(
