@@ -56,7 +56,7 @@ def show():
         ).on_value_change(lambda e: showPage(e.value - 1))
         body = ui.element("div")
 
-        showPage(0)
+        showPage(3)
 
     else:
         ui.label("Nobody's ordered anything yet!").style("font-size: 150%")
