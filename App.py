@@ -85,7 +85,7 @@ if __name__ in {"__main__", "__mp_main__"}:
     #   2. There is a <page-name>.py file in the pages folder that has a show method to display its contents
     @nicegui.ui.page("/app/{page}")
     def App(page: str):
-         load_subpage(page, page, get_main_pages())
+        load_subpage(page, page, get_main_pages())
 
     # This adds the messenger page to the website
     importlib.import_module("pages.message")

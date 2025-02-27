@@ -10,7 +10,7 @@ def show():
         body.clear()
 
         with body:
-            for _, item in itertools.islice(items.iterrows(), start, start + 5): # type: ignore
+            for _, item in itertools.islice(items.iterrows(), start, start + 5):  # type: ignore
                 if item["requester"] != uname:
                     with ui.card().classes("box"):
                         ui.label(f"👤 {item['requester']}").style("font-size: 75%")
