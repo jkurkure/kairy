@@ -6,7 +6,7 @@ import itertools
 
 @utils.logInOnly
 def show():
-    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][ # type: ignore
+    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][  # type: ignore
         "username"
     ]
 
@@ -42,8 +42,6 @@ def show():
                                 f"Offer to deliver item {item_id}"
                             )
                         )
-
-        
 
     else:
         ui.label("Nobody's ordered anything yet!").style("font-size: 150%")
