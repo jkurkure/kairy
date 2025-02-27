@@ -26,7 +26,7 @@ def show():
                     ui.label(f"Price: SG ${item['price']}")
                     if item["image"]:
                         image_data = item["image"]
-                        if len(base64.b64decode(image_data.split(",")[1])) <= 1_000_000:
+                        if len(base64.b64decode(image_data.split(",")[1])) <= 1_500_000:
                             ui.image(image_data).style("max-height: 200px")
 
                     with ui.row().classes("justify-end"):

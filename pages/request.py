@@ -99,8 +99,8 @@ def show():
 
     nicegui.ui.upload(
         on_upload=setPhoto,
-        on_rejected=lambda: nicegui.ui.notify("Profile Picture is maximum 4.5MB!"),
-        max_file_size=4_500_000,
+        on_rejected=lambda: nicegui.ui.notify("Profile Picture is maximum 1.5MB!"),
+        max_file_size=1_500_000,
         max_files=1,
     ).classes("max-w-full")
 
