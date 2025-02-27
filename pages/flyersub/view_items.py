@@ -1,6 +1,7 @@
 from nicegui import ui
 import utils
 from utils.addresses import justCountry
+import itertools
 
 
 @utils.logInOnly
@@ -9,7 +10,7 @@ def show():
         body.clear()
 
         with body:
-            for _, item in itertools.islice(items.iterrows(), start, start + 5):
+            for _, item in itertools.islice(items.iterrows(), start, start + 5): # type: ignore
                 if item["requester"] != uname:
                     with ui.card().classes("box"):
                         ui.label(f"👤 {item['requester']}").style("font-size: 75%")

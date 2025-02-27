@@ -67,7 +67,7 @@ def load_subpage(page_path, page_name, pages_list=None):
     utils.styles("main")
 
     body = importlib.import_module(f"pages.{page_path}")
-     body.show()
+    body.show()
 
 
 if __name__ in {"__main__", "__mp_main__"}:

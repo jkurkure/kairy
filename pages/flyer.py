@@ -22,4 +22,4 @@ def show():
 @ui.page("/app/flyer/{subpage}")
 def App(subpage: str):
     # Use the shared subpage loading function with a custom path
-     load_subpage(f"flyersub.{subpage}", subpage, flyer_pages)
+    load_subpage(f"flyersub.{subpage}", subpage, flyer_pages)
