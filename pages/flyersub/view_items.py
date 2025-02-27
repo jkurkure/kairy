@@ -1,20 +1,17 @@
+from functools import partial
 from nicegui import ui
 import utils
 from utils.addresses import justCountry
-import itertools
 
 
-@utils.logInOnly
-def show():
+async def create_list(after):
     uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][ # type: ignore
         "username"
     ]
 
     items = utils.database.getTable("Items")
-    start = 0
-    end = 5
     if items is not None and not items.empty:
-        for _, item in itertools.islice(items.iterrows(), start, end):
+        for _, item in items.iterrows():
             if item["requester"] != uname:
                 with ui.card().classes("box"):
                     ui.label(f"👤 {item['requester']}").style("font-size: 75%")
@@ -43,11 +40,15 @@ def show():
                             )
                         )
 
-        
-
     else:
         ui.label("Nobody's ordered anything yet!").style("font-size: 150%")
         ui.label("Why not be the first?").style("font-size: 150%")
         ui.button("Order Now!").on_click(
             lambda _: ui.navigate.to("/app/request")
         ).classes("bg-secondary")
+
+    after()
+
+@utils.logInOnly
+def show():
+    (standby := ui.spinner('dots', size='lg', color='orange')).on('load', partial(create_list, standby.delete))

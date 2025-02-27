@@ -25,7 +25,7 @@ def logout():
 def header(title):
     ui.page_title(env.APP_NAME)
     with ui.header().classes("justify-between no-wrap"):
-        with ui.row().classes("text-h4"):
+        with ui.row().classes("text-h4 no-wrap"):
             ui.label("🏠").on("click", lambda _: ui.navigate.to("/")).style(
                 "cursor: pointer;"
             )
