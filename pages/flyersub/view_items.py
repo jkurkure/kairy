@@ -2,20 +2,7 @@ from math import ceil
 from nicegui import ui
 import utils
 from utils.addresses import justCountry
-import itertools
-from PIL import Image
-import io
 import base64
-
-def compress_image(image_data, max_size=1_000_000):
-    image = Image.open(io.BytesIO(base64.b64decode(image_data.split(",")[1])))
-    output = io.BytesIO()
-    quality = 85
-    while output.tell() < max_size and quality > 10:
-        output.seek(0)
-        image.save(output, format="JPEG", quality=quality)
-        quality -= 5
-    return f"data:image/jpeg;base64,{base64.b64encode(output.getvalue()).decode()}"
 
 @utils.logInOnly
 def show():
@@ -23,7 +10,7 @@ def show():
         body.clear()
 
         with body:
-            for item in itertools.islice(filteredItems, start, start + 5):  # type: ignore
+            for item in filteredItems[start : start + 5]:  # type: ignore
                 with ui.card().classes("box"):
                     ui.label(f"👤 {item['requester']}").style("font-size: 75%")
 
@@ -32,17 +19,14 @@ def show():
                     ui.label(f"From: {justCountry(item['from'])}").classes(
                         "justify-center"
                     )
-                    ui.label(f"To: {justCountry(item['to'])}").classes(
-                        "justify-center"
-                    )
+                    ui.label(f"To: {justCountry(item['to'])}").classes("justify-center")
 
                     ui.label(f"Date: {item['date']}")
                     ui.label(f"Price: SG ${item['price']}")
                     if item["image"]:
                         image_data = item["image"]
-                        if len(base64.b64decode(image_data.split(",")[1])) > 1_000_000:
-                            image_data = compress_image(image_data)
-                        ui.image(image_data).style("max-height: 200px")
+                        if len(base64.b64decode(image_data.split(",")[1])) <= 1_000_000:
+                            ui.image(image_data).style("max-height: 200px")
 
                     with ui.row().classes("justify-end"):
                         ui.button(icon="message").props("fab mini").on_click(
@@ -63,11 +47,13 @@ def show():
     items = utils.database.getTable("Items")
 
     if items is not None and not items.empty:
-        filteredItems = [item for _, item in items.iterrows() if item["requester"] != uname]
+        filteredItems = [
+            item for _, item in items.iterrows() if item["requester"] != uname
+        ]
 
-        ui.pagination(1, ceil(len(filteredItems) / 5), direction_links=True).on_value_change(
-            lambda e: showPage(e.value - 1)
-        )
+        ui.pagination(
+            1, ceil(len(filteredItems) / 5), direction_links=True
+        ).on_value_change(lambda e: showPage(e.value - 1))
         body = ui.element("div")
 
         showPage(0)
