@@ -5,7 +5,7 @@ from utils.addresses import justCountry
 
 
 async def create_list(after):
-    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][ # type: ignore
+    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][  # type: ignore
         "username"
     ]
 
