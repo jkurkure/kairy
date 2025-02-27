@@ -2,7 +2,6 @@ from math import ceil
 from nicegui import ui
 import utils
 from utils.addresses import justCountry
-import itertools
 
 
 @utils.logInOnly
@@ -11,7 +10,8 @@ def show():
         body.clear()
 
         with body:
-            for item in itertools.islice(filteredItems, start, start + 5):  # type: ignore
+            for item in filteredItems[start:start + 5]:  # type: ignore
+                print(item)
                 with ui.card().classes("box"):
                     ui.label(f"👤 {item['requester']}").style("font-size: 75%")
 
