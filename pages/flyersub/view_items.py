@@ -5,7 +5,7 @@ from utils.addresses import justCountry
 
 
 async def create_list(after):
-    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][ # type: ignore
+    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][  # type: ignore
         "username"
     ]
 
@@ -49,6 +49,9 @@ async def create_list(after):
 
     after()
 
+
 @utils.logInOnly
 def show():
-    (standby := ui.spinner('dots', size='lg', color='orange')).on('load', partial(create_list, standby.delete))
+    (standby := ui.spinner("dots", size="lg", color="orange")).on(
+        "load", partial(create_list, standby.delete)
+    )
