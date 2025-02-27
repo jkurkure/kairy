@@ -1,4 +1,4 @@
-from nicegui import ui, run
+from nicegui import ui
 import utils
 from utils.addresses import justCountry
 
