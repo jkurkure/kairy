@@ -13,7 +13,7 @@ center_memo = {}
 async def getCenter(country):
     if country in center_memo:
         return center_memo[country]
-    
+
     try:
         location = geolocator().geocode(country)
         if location:

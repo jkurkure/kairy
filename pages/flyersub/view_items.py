@@ -49,6 +49,9 @@ async def create_list(after):
 
     after()
 
+
 @utils.logInOnly
 def show():
-    (standby := ui.spinner('dots', size='lg', color='orange')).on('load', partial(create_list, standby.delete))
+    (standby := ui.spinner("dots", size="lg", color="orange")).on(
+        "load", partial(create_list, standby.delete)
+    )
