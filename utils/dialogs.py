@@ -3,7 +3,7 @@ from nicegui import ui
 from utils import funcChain
 
 
-def order_success_dialog():
+def order_success_dialog(action):
     with ui.dialog() as dialog:
         with ui.card():
             ui.label("Success!").classes("text-h4")
@@ -13,7 +13,7 @@ def order_success_dialog():
             ui.button(
                 "Close",
                 on_click=funcChain(
-                    functools.partial(ui.navigate.to, "/app/users"), dialog.close
+                    action, dialog.close
                 ),
             ).props("fab color=green")
 
