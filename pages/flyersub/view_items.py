@@ -3,7 +3,6 @@ import utils
 from utils.addresses import justCountry
 
 
-
 @utils.logInOnly
 def show():
     def showPage(start):
@@ -53,7 +52,6 @@ def show():
         )
         body = ui.element("div")
         showPage(0)
-
 
     else:
         ui.label("Nobody's ordered anything yet!").style("font-size: 150%")
