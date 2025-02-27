@@ -4,7 +4,7 @@ from utils.addresses import justCountry
 
 
 async def create_list():
-    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][ # type: ignore
+    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][  # type: ignore
         "username"
     ]
 
@@ -46,9 +46,10 @@ async def create_list():
             lambda _: ui.navigate.to("/app/request")
         ).classes("bg-secondary")
 
+
 @utils.logInOnly
 async def show():
     await ui.context.client.connected()
-    standby = ui.spinner('dots', size='lg', color='orange')
+    standby = ui.spinner("dots", size="lg", color="orange")
     await create_list()
     standby.delete()
