@@ -12,7 +12,9 @@ def order_success_dialog(action):
             )
             ui.button(
                 "Close",
-                on_click=funcChain(action, dialog.close),
+                on_click=funcChain(
+                    action, dialog.close
+                ),
             ).props("fab color=green")
 
     return dialog

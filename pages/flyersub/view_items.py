@@ -1,17 +1,20 @@
 from nicegui import ui
 import utils
 from utils.addresses import justCountry
+import itertools
 
 
 @utils.logInOnly
 def show():
-    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][
+    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][ # type: ignore
         "username"
     ]
 
     items = utils.database.getTable("Items")
+    start = 0
+    end = 5
     if items is not None and not items.empty:
-        for _, item in items.iterrows():
+        for _, item in itertools.islice(items.iterrows(), start, end):
             if item["requester"] != uname:
                 with ui.card().classes("box"):
                     ui.label(f"👤 {item['requester']}").style("font-size: 75%")
@@ -39,6 +42,8 @@ def show():
                                 f"Offer to deliver item {item_id}"
                             )
                         )
+
+        
 
     else:
         ui.label("Nobody's ordered anything yet!").style("font-size: 150%")
