@@ -7,6 +7,7 @@ from PIL import Image
 import io
 import base64
 
+
 def compress_image(image_data, max_size=1_000_000):
     image = Image.open(io.BytesIO(base64.b64decode(image_data.split(",")[1])))
     output = io.BytesIO()
@@ -16,6 +17,7 @@ def compress_image(image_data, max_size=1_000_000):
         image.save(output, format="JPEG", quality=quality)
         quality -= 5
     return f"data:image/jpeg;base64,{base64.b64encode(output.getvalue()).decode()}"
+
 
 @utils.logInOnly
 def show():
@@ -32,9 +34,7 @@ def show():
                     ui.label(f"From: {justCountry(item['from'])}").classes(
                         "justify-center"
                     )
-                    ui.label(f"To: {justCountry(item['to'])}").classes(
-                        "justify-center"
-                    )
+                    ui.label(f"To: {justCountry(item['to'])}").classes("justify-center")
 
                     ui.label(f"Date: {item['date']}")
                     ui.label(f"Price: SG ${item['price']}")
@@ -63,11 +63,13 @@ def show():
     items = utils.database.getTable("Items")
 
     if items is not None and not items.empty:
-        filteredItems = [item for _, item in items.iterrows() if item["requester"] != uname]
+        filteredItems = [
+            item for _, item in items.iterrows() if item["requester"] != uname
+        ]
 
-        ui.pagination(1, ceil(len(filteredItems) / 5), direction_links=True).on_value_change(
-            lambda e: showPage(e.value - 1)
-        )
+        ui.pagination(
+            1, ceil(len(filteredItems) / 5), direction_links=True
+        ).on_value_change(lambda e: showPage(e.value - 1))
         body = ui.element("div")
 
         showPage(0)
