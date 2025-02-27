@@ -57,7 +57,7 @@ def create_navigation_buttons(pages_list, base_path="/app"):
 
 
 # Generic function to load and display a subpage
-async def load_subpage(page_path, page_name, pages_list=None):
+def load_subpage(page_path, page_name, pages_list=None):
     if pages_list:
         title = utils.find(pages_list, page_name, 2)
     else:
@@ -67,7 +67,7 @@ async def load_subpage(page_path, page_name, pages_list=None):
     utils.styles("main")
 
     body = importlib.import_module(f"pages.{page_path}")
-    await body.show()
+     body.show()
 
 
 if __name__ in {"__main__", "__mp_main__"}:
@@ -84,8 +84,8 @@ if __name__ in {"__main__", "__mp_main__"}:
     #   1. They are included in the pages list in this file
     #   2. There is a <page-name>.py file in the pages folder that has a show method to display its contents
     @nicegui.ui.page("/app/{page}")
-    async def App(page: str):
-        await load_subpage(page, page, get_main_pages())
+    def App(page: str):
+         load_subpage(page, page, get_main_pages())
 
     # This adds the messenger page to the website
     importlib.import_module("pages.message")

@@ -24,7 +24,7 @@ if database.getTable("Items") is None:
 
 
 @logInOnly
-async def show():
+def show():
     photo = ""
 
     i = nicegui.app.storage.user["logIn"]

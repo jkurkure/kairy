@@ -10,7 +10,7 @@ def geolocator():
 center_memo = {}
 
 
-async def getCenter(country):
+def getCenter(country):
     if country in center_memo:
         return center_memo[country]
 
@@ -41,7 +41,7 @@ def getName(lat, lng):
 lookfor_memo = {}
 
 
-async def lookFor(name):
+def lookFor(name):
     if name in lookfor_memo:
         return lookfor_memo[name]
 

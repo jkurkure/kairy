@@ -31,7 +31,7 @@ if database.getTable("Users") is None:
     database.newTable("Users", "username", "password", "birth", "phone", "country")
 
 
-async def show():
+def show():
     styles("main")
 
     ui.label("We're so glad you want to join the family!").classes("text-h5")
