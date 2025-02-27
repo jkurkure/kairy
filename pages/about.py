@@ -4,7 +4,7 @@ import env
 from utils import codename as cn
 
 
-def show():
+async def show():
     section(f"{env.APP_NAME} hopes to bring deliveries to the people!")
     section(f"Brought to you by {env.authors()}")
     ui.label(

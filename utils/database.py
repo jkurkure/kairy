@@ -73,5 +73,5 @@ def hasCell(tableName, field, value):
     return len(getRow(tableName, field, value)[0]) > 0
 
 
-def showTable(tableName):
+async def showTable(tableName):
     ui.table.from_pandas(getTable(tableName)).classes("w-full")  # type: ignore

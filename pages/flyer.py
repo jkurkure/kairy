@@ -14,12 +14,12 @@ flyer_pages = [
 
 
 @utils.logInOnly
-def show():
+async def show():
     # Use the shared navigation function with a custom base path
     create_navigation_buttons(flyer_pages, base_path="/app/flyer")
 
 
 @ui.page("/app/flyer/{subpage}")
-def App(subpage: str):
+async def App(subpage: str):
     # Use the shared subpage loading function with a custom path
-    load_subpage(f"flyersub.{subpage}", subpage, flyer_pages)
+    await load_subpage(f"flyersub.{subpage}", subpage, flyer_pages)

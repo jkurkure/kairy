@@ -1,10 +1,9 @@
-from functools import partial
-from nicegui import ui
+from nicegui import ui, run
 import utils
 from utils.addresses import justCountry
 
 
-async def create_list(after):
+async def create_list():
     uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][ # type: ignore
         "username"
     ]
@@ -47,8 +46,9 @@ async def create_list(after):
             lambda _: ui.navigate.to("/app/request")
         ).classes("bg-secondary")
 
-    after()
-
 @utils.logInOnly
-def show():
-    (standby := ui.spinner('dots', size='lg', color='orange')).on('load', partial(create_list, standby.delete))
+async def show():
+    await ui.context.client.connected()
+    standby = ui.spinner('dots', size='lg', color='orange')
+    await create_list()
+    standby.delete()

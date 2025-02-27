@@ -4,7 +4,7 @@ import utils
 
 
 @utils.logInOnly
-def show():
+async def show():
     utils.header("Inbox")
     utils.styles("main")
 
