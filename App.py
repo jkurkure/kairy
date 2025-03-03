@@ -7,6 +7,7 @@ import utils
 import sys
 
 from utils import dialogs
+from nicegui.page import page
 
 # This file is the main homepage of the app
 
@@ -109,3 +110,11 @@ if __name__ in {"__main__", "__mp_main__"}:
             loop.slow_callback_duration = 0.05
 
         nicegui.app.on_startup(debug)
+
+
+    # Redirect to homepage if 404 occurs
+    @nicegui.app.exception_handler(404)
+    async def exception_handler_404(request, _):
+        with nicegui.Client(page(''), request=request) as client:
+            nicegui.ui.navigate.to("/")
+        return client.build_response(request, 404)

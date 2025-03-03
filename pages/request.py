@@ -95,7 +95,7 @@ def show():
         nonlocal photo
         nicegui.ui.notify(f"Starting upload of {e.name}")
         rawData = base64.b64encode(e.content.read())
-        photo = images.sizeCap(f"data:{e.type};base64,{rawData.decode()}", 0.5e6)
+        photo = await images.sizeCap(f"data:{e.type};base64,{rawData.decode()}", 0.5e6)
         nicegui.ui.notify(f"Uploaded {e.name}")
 
     nicegui.ui.upload(
@@ -105,6 +105,7 @@ def show():
                         ),
                         max_file_size=int(4e6),
         max_files=1,
+        auto_upload=True
     ).classes("max-w-full")
 
     def listItem(e):
