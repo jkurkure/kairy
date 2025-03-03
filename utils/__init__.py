@@ -5,13 +5,14 @@ import re, rstr, random
 import pandas as pd
 from .database import getTable
 import env
+from starlette.formparsers import MultiPartParser
 
 
 # Here are some helper functions and variables
 
 fieldType = ui.input | ui.number
 firstNames, lastNames = pickle.load(open("resources/data/names.pkl", "rb"))
-
+MultiPartParser.max_file_size = 1024 * 1024 * 50
 
 class Form:
     pass

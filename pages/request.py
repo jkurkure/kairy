@@ -2,7 +2,7 @@ import base64
 import functools
 import uuid
 import nicegui
-from utils import database, logInOnly, unique
+from utils import database, images, logInOnly, unique
 import env
 import utils.dialogs as dialogs
 from utils.forms import (
@@ -91,16 +91,19 @@ def show():
 
     create_form_label("Attach a photo")
 
-    def setPhoto(e):
+    async def setPhoto(e):
         nonlocal photo
-        nicegui.ui.notify(f"Uploaded {e.name}")
+        nicegui.ui.notify(f"Starting upload of {e.name}")
         rawData = base64.b64encode(e.content.read())
-        photo = f"data:{e.type};base64,{rawData.decode()}"
+        photo = images.sizeCap(f"data:{e.type};base64,{rawData.decode()}", 0.5e6)
+        nicegui.ui.notify(f"Uploaded {e.name}")
 
     nicegui.ui.upload(
         on_upload=setPhoto,
-        on_rejected=lambda: nicegui.ui.notify("Profile Picture is maximum 1.5MB!"),
-        max_file_size=1_500_000,
+        on_rejected=lambda: nicegui.ui.notify(
+                            "Item Picture size is maximum 4MB!"
+                        ),
+                        max_file_size=int(4e6),
         max_files=1,
     ).classes("max-w-full")
 

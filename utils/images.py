@@ -2,7 +2,7 @@ from PIL import Image
 import base64
 import io
 
-def sizeCap(dataURI, size=2e6):
+async def sizeCap(dataURI, size=2e6):
     """
     This function takes a data URI and a maximum size (in bytes) as input.
     It decodes the data URI into an image and checks if the image is within the minimum size
