@@ -103,7 +103,7 @@ def show():
         on_rejected=lambda: nicegui.ui.notify("Item Picture size is maximum 4MB!"),
         max_file_size=int(4e6),
         max_files=1,
-        auto_upload=True
+        auto_upload=True,
     ).classes("max-w-full")
 
     def listItem(e):

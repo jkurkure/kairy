@@ -52,16 +52,18 @@ def show():
             item for _, item in items.iterrows() if item["requester"] != uname
         ]
 
-        if len(filteredItems): 
+        if len(filteredItems):
             ui.pagination(
                 1, ceil(len(filteredItems) / 5), direction_links=True
             ).on_value_change(lambda e: showPage(e.value - 1))
             body = ui.element("div")
 
             showPage(0)
-        
+
         else:
-            ui.label("No one else has requested deliveries for now.").style("font-size: 150%")
+            ui.label("No one else has requested deliveries for now.").style(
+                "font-size: 150%"
+            )
 
     else:
         ui.label("Nobody's ordered anything yet!").style("font-size: 150%")

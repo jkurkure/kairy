@@ -111,10 +111,9 @@ if __name__ in {"__main__", "__mp_main__"}:
 
         nicegui.app.on_startup(debug)
 
-
     # Redirect to homepage if 404 occurs
     @nicegui.app.exception_handler(404)
     async def exception_handler_404(request, _):
-        with nicegui.Client(page(''), request=request) as client:
+        with nicegui.Client(page(""), request=request) as client:
             nicegui.ui.navigate.to("/")
         return client.build_response(request, 404)
