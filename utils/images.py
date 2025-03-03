@@ -3,7 +3,6 @@ import base64
 import io
 
 
-
 async def sizeCap(dataURI, size=2e6):
     """
     This function takes a data URI and a maximum size (in bytes) as input.
