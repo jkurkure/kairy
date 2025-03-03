@@ -14,6 +14,7 @@ fieldType = ui.input | ui.number
 firstNames, lastNames = pickle.load(open("resources/data/names.pkl", "rb"))
 MultiPartParser.max_file_size = 1024 * 1024 * 50
 
+
 class Form:
     pass
 
