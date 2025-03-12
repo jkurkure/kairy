@@ -8,7 +8,7 @@ def show():
     utils.header("Inbox")
     utils.styles("main")
 
-    user = utils.database.getTable("Users").iloc[nicegui.app.storage.user["logIn"]][
+    user = utils.users().iloc[nicegui.app.storage.user["logIn"]][
         "username"
     ]
     messages = nicegui.app.storage.general.get("messages", {})

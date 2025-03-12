@@ -114,3 +114,5 @@ def getCurrentUser():
     record = getTable("Users").iloc[i]
 
     return i, record 
+
+users = functools.partial(getTable, 'Users')

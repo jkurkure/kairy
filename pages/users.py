@@ -27,7 +27,7 @@ def setProfilePic(e):
     nicegui.ui.notify(f"Uploaded {e.name}")
     rawData = base64.b64encode(e.content.read())
 
-    uname = (utils.database.getTable("Users").iloc[nicegui.app.storage.user["logIn"]])["username"]  # type: ignore
+    uname = (utils.users().iloc[nicegui.app.storage.user["logIn"]])["username"]  # type: ignore
     nicegui.app.storage.general["profile-pics"][
         uname
     ] = f"data:{e.type};base64,{rawData.decode()}"
@@ -35,10 +35,7 @@ def setProfilePic(e):
 
 
 def show():
-    if utils.database.getTable("Users") is None:
-        env.maintenance()
-
-    elif "logIn" not in nicegui.app.storage.user:
+    if "logIn" not in nicegui.app.storage.user:
         # Create a log-in page and use database to check if entered credentials are correct
         # If so, redirect to the user's page
         # If not, display an error message
