@@ -73,8 +73,7 @@ def show():
         nicegui.ui.button("Log In").on_click(login)
 
     else:
-        i = nicegui.app.storage.user["logIn"]
-        record = utils.database.getTable("Users").iloc[i]  # type: ignore
+        record = utils.getCurrentUser()[1]
         utils.section(f"Welcome back, {record['username']}!")
 
         with nicegui.ui.card().classes("box"):
@@ -129,7 +128,7 @@ def show():
                             "Payment Methods", "username", record["username"]
                         )[1]
 
-                        for cc_field in utils.database.getTable("Payment Methods").columns:  # type: ignore
+                        for cc_field in utils.database.getTable("Payment Methods").columns:
                             if cc_field != "username":
                                 nicegui.ui.label(
                                     f"{cc_field}: {cc_record[cc_field][0]}"

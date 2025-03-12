@@ -2,7 +2,7 @@ import base64
 import functools
 import uuid
 import nicegui
-from utils import database, images, logInOnly, unique
+from utils import database, getCurrentUser, images, logInOnly, unique
 import env
 import utils.dialogs as dialogs
 from utils.forms import (
@@ -26,10 +26,7 @@ if database.getTable("Items") is None:
 @logInOnly
 def show():
     photo = ""
-
-    i = nicegui.app.storage.user["logIn"]
-    record = database.getTable("Users").iloc[i]  # type: ignore
-
+    record = getCurrentUser()[1]
     form = Form()
 
     create_form_label("Tell us more!")

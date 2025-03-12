@@ -10,6 +10,14 @@ if not os.path.exists(data_dir):
 file_path = os.path.join(data_dir, "kairy.database")
 
 
+class DummyTable:
+    def __init__(self):
+        self.empty = True
+        self.iloc = {}
+        self.columns = iter([])
+        self.iterrows = lambda: iter([])
+
+
 def saveDB():
     with open(file_path, "wb") as f:
         pickle.dump(MainDatabase, f)
@@ -34,7 +42,7 @@ def getTable(name):
     if name in MainDatabase:
         return MainDatabase[name]
     else:
-        return None
+        return DummyTable()
 
 
 def delTable(name):

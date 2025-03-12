@@ -41,13 +41,13 @@ def show():
                             )
                         )
 
-    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][  # type: ignore
+    uname = utils.database.getTable("Users").iloc[utils.app.storage.user["logIn"]][
         "username"
     ]
 
     items = utils.database.getTable("Items")
 
-    if items is not None and not items.empty:
+    if not items.empty:
         filteredItems = [
             item for _, item in items.iterrows() if item["requester"] != uname
         ]
