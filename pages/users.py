@@ -125,7 +125,9 @@ def show():
                             "Payment Methods", "username", record["username"]
                         )[1]
 
-                        for cc_field in utils.database.getTable("Payment Methods").columns:
+                        for cc_field in utils.database.getTable(
+                            "Payment Methods"
+                        ).columns:
                             if cc_field != "username":
                                 nicegui.ui.label(
                                     f"{cc_field}: {cc_record[cc_field][0]}"

@@ -109,6 +109,7 @@ def logInOnly(func):
 
     return wrapper
 
+
 def getCurrentUser():
     i = app.storage.user["logIn"]
     record = getTable("Users").iloc[i]
