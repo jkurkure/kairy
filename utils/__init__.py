@@ -114,6 +114,7 @@ def getCurrentUser():
     i = app.storage.user["logIn"]
     record = getTable("Users").iloc[i]
 
-    return i, record 
+    return i, record
 
-users = functools.partial(getTable, 'Users')
+
+users = functools.partial(getTable, "Users")

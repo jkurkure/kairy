@@ -41,9 +41,7 @@ def show():
                             )
                         )
 
-    uname = utils.users().iloc[utils.app.storage.user["logIn"]][
-        "username"
-    ]
+    uname = utils.users().iloc[utils.app.storage.user["logIn"]]["username"]
 
     items = utils.database.getTable("Items")
 

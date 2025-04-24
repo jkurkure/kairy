@@ -8,9 +8,7 @@ def show():
     utils.header("Inbox")
     utils.styles("main")
 
-    user = utils.users().iloc[nicegui.app.storage.user["logIn"]][
-        "username"
-    ]
+    user = utils.users().iloc[nicegui.app.storage.user["logIn"]]["username"]
     messages = nicegui.app.storage.general.get("messages", {})
 
     convs = utils.unique([conv for conv in messages])
